@@ -20,7 +20,7 @@
                     <i class="fas fa-tv"></i>
                     <p>Sélectionnez une chaîne pour commencer la lecture</p>
                 </div>
-                <iframe id="live-player" frameborder="0" allowfullscreen allow="autoplay" style="display: none;"></iframe>
+                <iframe id="live-player" frameborder="0" style="display: none;"></iframe>
                 <div class="loading" id="loading" style="display: none;">
                     <i class="fas fa-spinner"></i>
                     <p>Chargement de la chaîne...</p>
@@ -46,8 +46,8 @@
                 <button class="control-btn" onclick="openInNewTab()">
                     <i class="fas fa-external-link-alt"></i> Ouvrir dans un nouvel onglet
                 </button>
-                <button class="control-btn" onclick="showAllChannels()">
-                    <i class="fas fa-list"></i> Toutes les chaînes
+                <button class="control-btn" onclick="showIframeInfo()">
+                    <i class="fas fa-info-circle"></i> Info iframe
                 </button>
             </div>
         </section>
@@ -56,25 +56,59 @@
             <div class="category">
                 <h2><i class="fas fa-futbol"></i> beIN SPORTS</h2>
                 <ul class="channel-list">
-                    <li class="channel-item" data-iframe="https://s.streams-on.live/b-3/" data-name="beIN SPORTS 1" data-quality="1080P" data-source="Source: Streams-on.live">
+                    <!-- beIN SPORTS 1 - Streams-on.live -->
+                    <li class="channel-item" 
+                        data-src="https://s.streams-on.live/b-3/" 
+                        data-name="beIN SPORTS 1" 
+                        data-quality="1080P" 
+                        data-source="Streams-on.live"
+                        data-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        data-sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                        data-scrolling="no">
                         <div>
                             <span class="channel-name">beIN SPORTS 1</span>
                             <span class="channel-quality">1080P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://v3.player.rcs.revma.com/1jqx8u7d1t7qu" data-name="beIN SPORTS 2" data-quality="720P" data-source="Source: Revma Player">
+                    
+                    <!-- beIN SPORTS 2 - Revma Player -->
+                    <li class="channel-item" 
+                        data-src="https://v3.player.rcs.revma.com/1jqx8u7d1t7qu" 
+                        data-name="beIN SPORTS 2" 
+                        data-quality="720P" 
+                        data-source="Revma Player"
+                        data-allow="autoplay; encrypted-media"
+                        data-frameborder="0"
+                        data-allowfullscreen="true">
                         <div>
                             <span class="channel-name">beIN SPORTS 2</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://player.tvstreams.net/embed/bein-sports-3" data-name="beIN SPORTS 3" data-quality="360P" data-source="Source: TVStreams">
+                    
+                    <!-- beIN SPORTS 3 - TVStreams -->
+                    <li class="channel-item" 
+                        data-src="https://player.tvstreams.net/embed/bein-sports-3" 
+                        data-name="beIN SPORTS 3" 
+                        data-quality="360P" 
+                        data-source="TVStreams"
+                        data-allow="autoplay; fullscreen"
+                        data-scrolling="no"
+                        data-style="border: none;">
                         <div>
                             <span class="channel-name">beIN SPORTS 3</span>
                             <span class="channel-quality">360P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://embed.myiptv.website/beinentertainment" data-name="beIN ENTERTAINMENT" data-quality="720P" data-source="Source: MyIPTV">
+                    
+                    <!-- beIN ENTERTAINMENT - MyIPTV -->
+                    <li class="channel-item" 
+                        data-src="https://embed.myiptv.website/beinentertainment" 
+                        data-name="beIN ENTERTAINMENT" 
+                        data-quality="720P" 
+                        data-source="MyIPTV"
+                        data-allow="autoplay; picture-in-picture"
+                        data-loading="lazy">
                         <div>
                             <span class="channel-name">beIN ENTERTAINMENT</span>
                             <span class="channel-quality">720P</span>
@@ -86,25 +120,56 @@
             <div class="category">
                 <h2><i class="fas fa-globe-africa"></i> CHAÎNES ARABES</h2>
                 <ul class="channel-list">
-                    <li class="channel-item" data-iframe="https://embed.streamingtv.com/mbc1" data-name="MBC 1" data-quality="1080P" data-source="Source: StreamingTV">
+                    <!-- MBC 1 - StreamingTV -->
+                    <li class="channel-item" 
+                        data-src="https://embed.streamingtv.com/mbc1" 
+                        data-name="MBC 1" 
+                        data-quality="1080P" 
+                        data-source="StreamingTV"
+                        data-allow="autoplay; encrypted-media"
+                        data-referrerpolicy="no-referrer">
                         <div>
                             <span class="channel-name">MBC 1</span>
                             <span class="channel-quality">1080P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://player.arabictv.net/mbc2" data-name="MBC 2" data-quality="720P" data-source="Source: ArabicTV">
+                    
+                    <!-- MBC 2 - ArabicTV -->
+                    <li class="channel-item" 
+                        data-src="https://player.arabictv.net/mbc2" 
+                        data-name="MBC 2" 
+                        data-quality="720P" 
+                        data-source="ArabicTV"
+                        data-allow="autoplay; fullscreen"
+                        data-sandbox="allow-scripts allow-same-origin">
                         <div>
                             <span class="channel-name">MBC 2</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://embed.iptvworld.tv/aljazeera" data-name="Al Jazeera" data-quality="1080P" data-source="Source: IPTVWorld">
+                    
+                    <!-- Al Jazeera - IPTVWorld -->
+                    <li class="channel-item" 
+                        data-src="https://embed.iptvworld.tv/aljazeera" 
+                        data-name="Al Jazeera" 
+                        data-quality="1080P" 
+                        data-source="IPTVWorld"
+                        data-allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        data-frameborder="0">
                         <div>
                             <span class="channel-name">Al Jazeera</span>
                             <span class="channel-quality">1080P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://player.alarabiya.net/live" data-name="Al Arabiya" data-quality="720P" data-source="Source: AlArabiya">
+                    
+                    <!-- Al Arabiya -->
+                    <li class="channel-item" 
+                        data-src="https://player.alarabiya.net/live" 
+                        data-name="Al Arabiya" 
+                        data-quality="720P" 
+                        data-source="AlArabiya"
+                        data-allow="autoplay; fullscreen"
+                        data-scrolling="no">
                         <div>
                             <span class="channel-name">Al Arabiya</span>
                             <span class="channel-quality">720P</span>
@@ -116,25 +181,56 @@
             <div class="category">
                 <h2><i class="fas fa-tower-eiffel"></i> CHAÎNES FRANÇAISES</h2>
                 <ul class="channel-list">
-                    <li class="channel-item" data-iframe="https://francetv.player.fr/tf1-live" data-name="TF1" data-quality="1080P" data-source="Source: FranceTV">
+                    <!-- TF1 - FranceTV -->
+                    <li class="channel-item" 
+                        data-src="https://francetv.player.fr/tf1-live" 
+                        data-name="TF1" 
+                        data-quality="1080P" 
+                        data-source="FranceTV"
+                        data-allow="autoplay; encrypted-media"
+                        data-referrerpolicy="strict-origin">
                         <div>
                             <span class="channel-name">TF1</span>
                             <span class="channel-quality">1080P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://francetv.player.fr/france2-live" data-name="France 2" data-quality="720P" data-source="Source: FranceTV">
+                    
+                    <!-- France 2 - FranceTV -->
+                    <li class="channel-item" 
+                        data-src="https://francetv.player.fr/france2-live" 
+                        data-name="France 2" 
+                        data-quality="720P" 
+                        data-source="FranceTV"
+                        data-allow="autoplay; picture-in-picture"
+                        data-loading="eager">
                         <div>
                             <span class="channel-name">France 2</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://m6.player.fr/live" data-name="M6" data-quality="720P" data-source="Source: M6 Player">
+                    
+                    <!-- M6 - M6 Player -->
+                    <li class="channel-item" 
+                        data-src="https://m6.player.fr/live" 
+                        data-name="M6" 
+                        data-quality="720P" 
+                        data-source="M6 Player"
+                        data-allow="autoplay; fullscreen"
+                        data-sandbox="allow-scripts allow-popups">
                         <div>
                             <span class="channel-name">M6</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://canalplus.embed.fr/live" data-name="Canal+" data-quality="1080P" data-source="Source: Canal+">
+                    
+                    <!-- Canal+ -->
+                    <li class="channel-item" 
+                        data-src="https://canalplus.embed.fr/live" 
+                        data-name="Canal+" 
+                        data-quality="1080P" 
+                        data-source="Canal+"
+                        data-allow="autoplay; encrypted-media"
+                        data-referrerpolicy="no-referrer-when-downgrade">
                         <div>
                             <span class="channel-name">Canal+</span>
                             <span class="channel-quality">1080P</span>
@@ -146,25 +242,56 @@
             <div class="category">
                 <h2><i class="fas fa-flag"></i> CHAÎNES TURQUES</h2>
                 <ul class="channel-list">
-                    <li class="channel-item" data-iframe="https://trtplayer.com/embed/trt1" data-name="TRT 1" data-quality="1080P" data-source="Source: TRT Player">
+                    <!-- TRT 1 - TRT Player -->
+                    <li class="channel-item" 
+                        data-src="https://trtplayer.com/embed/trt1" 
+                        data-name="TRT 1" 
+                        data-quality="1080P" 
+                        data-source="TRT Player"
+                        data-allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        data-frameborder="0">
                         <div>
                             <span class="channel-name">TRT 1</span>
                             <span class="channel-quality">1080P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://startvplayer.net/embed" data-name="Star TV" data-quality="720P" data-source="Source: Star TV Player">
+                    
+                    <!-- Star TV -->
+                    <li class="channel-item" 
+                        data-src="https://startvplayer.net/embed" 
+                        data-name="Star TV" 
+                        data-quality="720P" 
+                        data-source="Star TV Player"
+                        data-allow="autoplay; fullscreen"
+                        data-scrolling="no">
                         <div>
                             <span class="channel-name">Star TV</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://showtvembed.com/live" data-name="Show TV" data-quality="720P" data-source="Source: Show TV">
+                    
+                    <!-- Show TV -->
+                    <li class="channel-item" 
+                        data-src="https://showtvembed.com/live" 
+                        data-name="Show TV" 
+                        data-quality="720P" 
+                        data-source="Show TV"
+                        data-allow="autoplay; picture-in-picture"
+                        data-sandbox="allow-scripts allow-same-origin">
                         <div>
                             <span class="channel-name">Show TV</span>
                             <span class="channel-quality">720P</span>
                         </div>
                     </li>
-                    <li class="channel-item" data-iframe="https://atvplayer.org/embed" data-name="ATV" data-quality="1080P" data-source="Source: ATV Player">
+                    
+                    <!-- ATV -->
+                    <li class="channel-item" 
+                        data-src="https://atvplayer.org/embed" 
+                        data-name="ATV" 
+                        data-quality="1080P" 
+                        data-source="ATV Player"
+                        data-allow="autoplay; encrypted-media"
+                        data-referrerpolicy="origin">
                         <div>
                             <span class="channel-name">ATV</span>
                             <span class="channel-quality">1080P</span>
@@ -178,13 +305,25 @@
             <h2><i class="fas fa-broadcast-tower"></i> ÉVÉNEMENTS EN DIRECT</h2>
             <p>Événements sportifs et spéciaux diffusés en direct</p>
             <div class="channel-list" style="margin-top: 15px;">
-                <button class="channel-item" data-iframe="https://livestream.embed.com/premierleague" data-name="PREMIER LEAGUE LIVE" data-quality="EN DIRECT" data-source="Source: LiveStream">
+                <button class="channel-item" 
+                        data-src="https://livestream.embed.com/premierleague" 
+                        data-name="PREMIER LEAGUE LIVE" 
+                        data-quality="EN DIRECT" 
+                        data-source="LiveStream"
+                        data-allow="autoplay; fullscreen"
+                        data-frameborder="0">
                     <div>
                         <span class="channel-name">PREMIER LEAGUE LIVE</span>
                         <span class="channel-quality">EN DIRECT</span>
                     </div>
                 </button>
-                <button class="channel-item" data-iframe="https://championsleague.stream/embed" data-name="CHAMPIONS LEAGUE" data-quality="EN DIRECT" data-source="Source: Champions League Stream">
+                <button class="channel-item" 
+                        data-src="https://championsleague.stream/embed" 
+                        data-name="CHAMPIONS LEAGUE" 
+                        data-quality="EN DIRECT" 
+                        data-source="Champions League Stream"
+                        data-allow="autoplay; encrypted-media"
+                        data-scrolling="no">
                     <div>
                         <span class="channel-name">CHAMPIONS LEAGUE</span>
                         <span class="channel-quality">EN DIRECT</span>
@@ -193,22 +332,86 @@
             </div>
         </div>
         
-        <div id="all-channels-modal" class="modal">
+        <!-- Modal d'information iframe -->
+        <div id="iframe-info-modal" class="modal">
             <div class="modal-content">
-                <span class="close-modal" onclick="closeAllChannels()">&times;</span>
-                <h2><i class="fas fa-list"></i> Toutes les chaînes</h2>
-                <div id="all-channels-list" class="all-channels-list">
-                    <!-- Les chaînes seront générées dynamiquement ici -->
+                <span class="close-modal" onclick="closeIframeInfo()">&times;</span>
+                <h2><i class="fas fa-code"></i> Configuration de l'iframe</h2>
+                <div id="iframe-info-content">
+                    <!-- Les informations seront affichées ici -->
                 </div>
             </div>
         </div>
         
         <footer>
             <p><strong>NEO TV - Plateforme IPTV gratuite</strong></p>
-            <p>Ce site agrège des lecteurs vidéo externes via iframe | À but éducatif uniquement</p>
+            <p>Chaque chaîne utilise une configuration iframe spécifique à sa source</p>
             <p>Les chaînes sont hébergées sur des plateformes tierces</p>
             <p>© 2023 NEO TV. Tous droits réservés.</p>
         </footer>
+    </div>
+
+    <!-- Barre de progression 50% -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="page-indicator" id="page-indicator">
+        <i class="fas fa-chart-bar"></i>
+        <span id="progress-text">50% de la page</span>
+    </div>
+
+    <button class="show-progress-btn" id="show-progress-btn" title="Montrer 50% de la page">
+        <i class="fas fa-percentage"></i>
+    </button>
+
+    <!-- Panneau d'administration -->
+    <div class="admin-panel">
+        <button class="admin-toggle-btn" id="admin-toggle-btn" title="Administration">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+
+    <!-- Modal d'administration -->
+    <div class="admin-modal" id="admin-modal">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2><i class="fas fa-cogs"></i> Administration - Gestion des liens</h2>
+                <span class="close-admin" onclick="closeAdminPanel()">&times;</span>
+            </div>
+            
+            <div id="admin-channels-list">
+                <!-- Les champs d'édition seront générés ici dynamiquement -->
+            </div>
+            
+            <div class="admin-buttons">
+                <button class="admin-btn reset-btn" onclick="resetToDefault()">
+                    <i class="fas fa-undo"></i> Restaurer par défaut
+                </button>
+                <button class="admin-btn cancel-btn" onclick="closeAdminPanel()">
+                    <i class="fas fa-times"></i> Annuler
+                </button>
+                <button class="admin-btn save-btn" onclick="saveAllChannels()">
+                    <i class="fas fa-save"></i> Enregistrer tous les changements
+                </button>
+            </div>
+            
+            <div class="export-import">
+                <button class="export-btn" onclick="exportChannels()">
+                    <i class="fas fa-download"></i> Exporter la configuration
+                </button>
+                <button class="import-btn" onclick="document.getElementById('import-file').click()">
+                    <i class="fas fa-upload"></i> Importer configuration
+                </button>
+                <input type="file" id="import-file" class="file-input" accept=".json" onchange="importChannels(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Message de confirmation -->
+    <div class="confirmation-message" id="confirmation-message">
+        <i class="fas fa-check-circle"></i>
+        <span id="confirmation-text">Modifications enregistrées</span>
     </div>
 
     <script src="script.js"></script>
