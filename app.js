@@ -3,15 +3,17 @@
 // --- 1. État de l'Application
 let currentView = 'home'; // 'home', 'channels', 'events'
 let selectedCategory = 'all';
-let selectedChannel = null; // L'objet chaîne sélectionné
+let selectedChannel = null; 
 let menuOpen = false;
 let searchActive = false;
 let searchQuery = '';
 
-// --- 2. Élément de Montage
+// --- 2. Éléments de Montage (CORRIGÉ: Cible les nouveaux conteneurs)
+const headerContainer = document.getElementById('header-container');
+const footerContainer = document.getElementById('footer-container');
 const app = document.getElementById('app');
 
-// --- 3. Fonctions de Gestion des Événements (Disponibles dans le HTML)
+// --- 3. Fonctions de Gestion des Événements
 function toggleMenu() {
     menuOpen = !menuOpen;
     renderApp();
@@ -29,7 +31,7 @@ function toggleSearch() {
 function setSearchQuery(query) {
     searchQuery = query;
     if (searchActive && searchQuery.length > 0) {
-        currentView = 'channels'; // Affiche la vue Chaînes avec les résultats
+        currentView = 'channels'; 
     } else if (searchActive && searchQuery.length === 0) {
         currentView = 'home'; 
     }
@@ -53,7 +55,7 @@ function selectCategory(categoryId) {
 
 function selectChannel(channelId) {
     selectedChannel = channels.find(ch => ch.id == channelId);
-    renderApp(); // Le renderApp appellera renderVideoPlayer
+    renderApp(); 
 }
 
 function selectEventChannel(channelName) {
@@ -67,7 +69,6 @@ function selectEventChannel(channelName) {
 function closePlayer() {
     selectedChannel = null;
     document.body.style.overflow = '';
-    // Retire l'élément du lecteur du DOM (créé dans renderVideoPlayer)
     const playerElement = document.getElementById('video-player-overlay');
     if (playerElement) {
         playerElement.remove();
@@ -82,7 +83,7 @@ function goBack() {
 }
 
 
-// --- 4. Fonctions de Rendu des Vues (HTML strings)
+// --- 4. Fonctions de Rendu des Composants (HTML strings)
 
 function renderHeader() {
     const isSearchMode = searchActive;
@@ -196,10 +197,23 @@ function renderEventCard(event) {
     `;
 }
 
+function renderMenu() {
+    if (!menuOpen) return '';
+    return `
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); z-index: 60; padding-top: 60px;">
+            <div style="padding: 20px; color: white;">
+                <h3 style="margin-bottom: 15px;">Menu</h3>
+                <p style="margin-bottom: 20px;">Ici se trouveront les options du menu (Aide, À propos, etc.).</p>
+                <button onclick="toggleMenu()" style="background-color: #dc2626; padding: 10px 15px; border-radius: 8px;">Fermer Menu</button>
+            </div>
+        </div>
+    `;
+}
+
 function renderHomePage() {
     const categoryGrid = categories.map(cat => `
         <button class="category-btn" onclick="selectCategory('${cat.id}')">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: white;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: white; padding: 25px;">
                 <i data-lucide="${cat.icon || 'tv'}" style="width: 32px; height: 32px;"></i>
                 <span style="font-size: 1.1em;">${cat.name}</span>
             </div>
@@ -235,7 +249,6 @@ function renderChannelsPage() {
     
     const channelGrid = filteredChannels.map(renderChannelCard).join('');
 
-    // Affichage d'un bouton Retour si ce n'est pas un résultat de recherche
     const backButton = searchQuery.length === 0 ? `
         <button onclick="goBack()" style="padding: 5px;">
             <i data-lucide="arrow-left" style="width: 24px; height: 24px;"></i>
@@ -294,22 +307,17 @@ function renderEventsPage() {
     `;
 }
 
-
-// Lecteur Vidéo (Séparé du flux principal pour pouvoir être au-dessus de tout)
 function renderVideoPlayer() {
     if (!selectedChannel) {
         document.body.style.overflow = '';
         return; 
     }
 
-    // 1. Nettoyage : retire l'ancien lecteur s'il existe
     const existingPlayer = document.getElementById('video-player-overlay');
     if (existingPlayer) existingPlayer.remove();
 
-    // 2. Application du style pour empêcher le scroll
     document.body.style.overflow = 'hidden';
 
-    // 3. Définition des styles de recadrage
     const { cropSettings, streamUrl, name } = selectedChannel;
     
     const width = cropSettings?.width || '100%';
@@ -346,22 +354,23 @@ function renderVideoPlayer() {
         </div>
     `;
     
-    // 4. Ajout du lecteur au body (pour qu'il soit au-dessus de #app)
     const playerContainer = document.createElement('div');
     playerContainer.innerHTML = playerHTML;
     document.body.appendChild(playerContainer.firstChild);
 
-    // 5. Initialisation des icônes dans le lecteur
     setTimeout(() => lucide.createIcons(), 0);
 }
 
 
-// --- 5. Fonction de Rendu Principale
+// --- 5. Fonction de Rendu Principale (CORRIGÉE: Rend chaque partie séparément)
 
 function renderApp() {
+    // 1. Rendre les éléments fixes (Header et Footer)
+    headerContainer.innerHTML = renderHeader();
+    footerContainer.innerHTML = renderFooter();
+
+    // 2. Rendre le contenu principal (#app)
     let content = '';
-    
-    // Rendu du contenu de la vue actuelle
     if (currentView === 'home') {
         content = renderHomePage();
     } else if (currentView === 'channels') {
@@ -369,17 +378,23 @@ function renderApp() {
     } else if (currentView === 'events') {
         content = renderEventsPage();
     }
-    
-    // Assemblage de l'application principale
-    const finalHtml = renderHeader() + renderMenu() + content + renderFooter();
+    app.innerHTML = content;
 
-    // Injection du contenu dans l'ID 'app'
-    app.innerHTML = finalHtml;
+    // 3. Rendre le Menu (au-dessus du contenu principal)
+    // On rend le menu DANS le corps s'il est ouvert pour ne pas perturber #app
+    const existingMenu = document.querySelector('.menu-drawer');
+    if (existingMenu) existingMenu.remove();
+    if (menuOpen) {
+        const menuContainer = document.createElement('div');
+        menuContainer.className = 'menu-drawer';
+        menuContainer.innerHTML = renderMenu();
+        document.body.appendChild(menuContainer.firstChild);
+    }
     
-    // Ré-initialisation des icônes Lucide
+    // 4. Re-initialisation des icônes Lucide (important après chaque innerHTML)
     setTimeout(() => lucide.createIcons(), 0);
 
-    // Rendu du lecteur vidéo S'IL est actif
+    // 5. Rendre le lecteur vidéo S'IL est actif
     if (selectedChannel) {
         renderVideoPlayer();
     }
@@ -388,5 +403,6 @@ function renderApp() {
 
 // --- 6. Initialisation
 document.addEventListener('DOMContentLoaded', () => {
+    // Rend la première vue au chargement de la page
     renderApp();
 });
