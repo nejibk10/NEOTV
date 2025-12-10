@@ -15,7 +15,7 @@ const channels = [
         logo: 'https://placehold.co/200x112?text=B1+FOOT',
         category: 'sport',
         currentProgram: 'Football Live - PSG vs OL',
-        streamUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1', // URL d'exemple
+        streamUrl: 'https://s.streams-on.live/b-3/', // URL d'exemple
         // IMPORTANT: Paramètres de recadrage pour masquer les barres/logos du site hôte
         cropSettings: { width: '108%', height: '110%', top: '-20px', left: '-10px' },
     },
