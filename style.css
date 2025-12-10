@@ -1,0 +1,183 @@
+/* style.css */
+
+/* --- Réinitialisation de base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0a0a0a; /* Fond sombre */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* --- Layout Principal --- */
+#app {
+    padding-top: 60px; /* Espace pour le header fixe */
+    padding-bottom: 60px; /* Espace pour le footer fixe */
+}
+
+/* --- Header & Footer (fixes) --- */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #dc2626; /* Rouge primaire */
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #1a1a1a;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: space-around;
+    z-index: 50;
+}
+
+.footer-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 0;
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.footer-btn.active {
+    color: #dc2626; /* Couleur active */
+}
+.footer-btn:hover:not(.active) {
+    color: white;
+}
+
+/* --- Généralités --- */
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.content-area {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Grilles --- */
+.categories-grid, .channels-grid, .events-grid {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.channels-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* --- Cartes Chaînes et Événements --- */
+.category-btn, .channel-card, .event-card {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #333;
+    transition: all 0.3s;
+    text-align: center;
+    overflow: hidden;
+}
+
+.category-btn:hover, .channel-card:hover, .event-card:hover {
+    border-color: #dc2626;
+    transform: scale(1.02);
+}
+
+.channel-card {
+    text-align: left;
+    padding: 0;
+}
+.channel-card-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.channel-card-info { padding: 15px; }
+.channel-card-info p { color: #999; font-size: 0.9em; }
+
+/* Styles spécifiques aux événements */
+.live-badge {
+    background-color: #dc2626;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+.event-vs {
+    font-weight: bold;
+    color: #dc2626;
+    font-size: 1.2em;
+}
+
+/* --- Lecteur Vidéo (Modal/Plein Écran) --- */
+.video-player-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black; 
+    z-index: 100;
+}
+
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden; /* **Clé du Recadrage:** Masque tout ce qui dépasse de l'iframe */
+}
+
+.video-player-iframe {
+    position: absolute;
+    /* Les styles width/height/top/left pour le recadrage sont injectés par JS */
+    border: none;
+    pointer-events: auto; 
+}
+
+.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 110;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
