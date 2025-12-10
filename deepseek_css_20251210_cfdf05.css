@@ -1,0 +1,370 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #fff;
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.player-section {
+    margin-bottom: 40px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+#player-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#live-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+}
+
+.player-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #666;
+    z-index: 1;
+}
+
+.player-placeholder i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #0072ff;
+}
+
+.current-channel {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.channel-info h3 {
+    font-size: 1.5rem;
+    color: #00c6ff;
+}
+
+.channel-info p {
+    color: #aaa;
+}
+
+.channel-source {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.quality-badge {
+    background: #0072ff;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.category:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.category h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #00c6ff;
+    border-bottom: 2px solid rgba(0, 198, 255, 0.3);
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.category h2 i {
+    font-size: 1.5rem;
+}
+
+.channel-list {
+    list-style: none;
+}
+
+.channel-item {
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    color: white;
+    width: 100%;
+    text-align: left;
+}
+
+.channel-item:hover {
+    background: rgba(0, 114, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.channel-item.active {
+    background: rgba(0, 114, 255, 0.4);
+    border-left: 4px solid #00c6ff;
+}
+
+.channel-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.channel-quality {
+    color: #aaa;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 10px 20px;
+    background: rgba(0, 114, 255, 0.3);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.control-btn:hover {
+    background: rgba(0, 114, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.live-events {
+    background: rgba(255, 50, 50, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.live-events h2 {
+    color: #ff4d4d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0072ff;
+    text-align: center;
+    z-index: 2;
+}
+
+.loading i {
+    animation: spin 1s linear infinite;
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #777;
+    font-size: 0.9rem;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid rgba(0, 198, 255, 0.3);
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #fff;
+}
+
+.all-channels-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.all-channels-list .channel-item {
+    margin-bottom: 0;
+}
+
+.channel-category {
+    color: #00c6ff;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .categories {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    .current-channel {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .controls {
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+    
+    .all-channels-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .control-btn {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+    
+    .channel-name {
+        font-size: 0.9rem;
+    }
+    
+    .channel-quality {
+        font-size: 0.8rem;
+    }
+}
