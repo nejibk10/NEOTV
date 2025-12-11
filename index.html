@@ -221,20 +221,6 @@
             overflow: hidden;
         }
         
-        .channel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .channel-header h2 {
-            color: #00c6ff;
-        }
-        
         .controls {
             display: flex;
             gap: 10px;
@@ -256,35 +242,6 @@
         .control-btn:hover {
             background: rgba(0, 114, 255, 0.5);
             transform: translateY(-2px);
-        }
-        
-        /* ===== ÉDITION IFRAME ===== */
-        .iframe-editor {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        
-        .iframe-editor h3 {
-            color: #00c6ff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .code-area {
-            width: 100%;
-            height: 200px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: white;
-            font-family: 'Courier New', monospace;
-            padding: 15px;
-            margin-bottom: 15px;
-            resize: vertical;
         }
         
         /* ===== SECTIONS ÉVÉNEMENTS ET FILMS ===== */
@@ -681,41 +638,21 @@
                     name: 'beIN SPORTS 1',
                     quality: '1080P',
                     description: 'Chaîne sportive principale',
-                   <iframe src="https://ntvstream.cx/embed?t=RnBicEVST3ZWdWxIOTdKVHE4MlUydG1VNVJxa1EvSmR3cnpQQ1N4bENyUjFpZzFDRVlXRlZiMm5qaExUZ3VSSDh2R3owZlNPRDBWUnN4RG1IenBUeGE2L3NjV01RN3FiY0pRR20wSlhzMjQ9" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=cEZxcDdEVEtaUE90NGFtWWo3UlYrZURJRHV1VmwzOUNtQTc2TE4wZVhoM1d5NGtqWHVGN0s1WXhWNm1QalJOeSt3YjRlU2NHRVpvRXV0NExON2JPZjZvUXpHRDg3MlozbXhaZ2ZxYVNVRWpDWENadEtZNnFkbThvWlQ4d3A0Z3k~" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 },
                 {
                     id: 'bein2',
                     name: 'beIN SPORTS 2',
                     quality: '720P',
                     description: 'Deuxième chaîne sportive',
-                    iframe: `<iframe
-      src="https://www.live-match.tv/matches/%d8%a7%d9%84%d8%b9%d8%b1%d8%a7%d9%82-%d8%aa%d8%ad%d8%aa-23-%d9%88-%d8%a7%d9%84%d8%a5%d9%85%d8%a7%d8%b1%d8%a7%d8%aa-%d8%aa%d8%ad%d8%aa-23/"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_BEIN2_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 },
                 {
                     id: 'bein3',
                     name: 'beIN SPORTS 3',
                     quality: 'HD - Match',
                     description: 'Match Nottingham Forest - Malmö',
-                    iframe: `<iframe
-      src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_BEIN3_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ],
             
@@ -725,34 +662,14 @@
                     name: 'MBC 1',
                     quality: '1080P',
                     description: 'Chaîne arabe généraliste',
-                    iframe: `<iframe
-      src="https://embed.streamingtv.com/mbc1"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_MBC1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 },
                 {
                     id: 'aljazeera',
                     name: 'Al Jazeera',
                     quality: '720P',
                     description: 'Chaîne d\'information',
-                    iframe: `<iframe
-      src="https://embed.iptvworld.tv/aljazeera"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_ALJAZEERA_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ],
             
@@ -762,34 +679,14 @@
                     name: 'TF1',
                     quality: '1080P',
                     description: 'Chaîne française généraliste',
-                    iframe: `<iframe
-      src="https://example.com/tf1"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_TF1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 },
                 {
                     id: 'france2',
                     name: 'France 2',
                     quality: '720P',
                     description: 'Chaîne publique française',
-                    iframe: `<iframe
-      src="https://example.com/france2"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_FRANCE2_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ],
             
@@ -799,17 +696,7 @@
                     name: 'TRT 1',
                     quality: '1080P',
                     description: 'Chaîne turque nationale',
-                    iframe: `<iframe
-      src="https://example.com/trt1"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_TRT1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ],
             
@@ -819,17 +706,7 @@
                     name: 'Événement Live 1',
                     quality: 'HD',
                     description: 'Match de football en direct',
-                    iframe: `<iframe
-      src="https://example.com/live1"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_LIVE1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ],
             
@@ -839,17 +716,7 @@
                     name: 'BBC World News',
                     quality: '1080P',
                     description: 'Chaîne d\'information internationale',
-                    iframe: `<iframe
-      src="https://example.com/bbc"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_BBC_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 }
             ]
         };
@@ -860,49 +727,19 @@
                 name: 'Finale Champions League',
                 description: 'Manchester City vs Real Madrid - Stade de France',
                 quality: '4K ULTRA HD',
-                iframe: `<iframe
-      src="https://example.com/champions-league-final"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_CHAMPIONS_LEAGUE_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             },
             event2: {
                 name: 'NBA Finals - Game 7',
                 description: 'Lakers vs Celtics - TD Garden',
                 quality: 'HD LIVE',
-                iframe: `<iframe
-      src="https://example.com/nba-finals"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_NBA_FINALS_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             },
             event3: {
                 name: 'Coldplay World Tour 2024',
                 description: 'Concert Live - Stade de France',
                 quality: 'FULL HD',
-                iframe: `<iframe
-      src="https://example.com/coldplay-concert"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_COLDPLAY_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             }
         };
         
@@ -912,49 +749,19 @@
                 name: 'Interstellar',
                 description: 'Un groupe d\'explorateurs voyage à travers un trou de ver dans l\'espace',
                 quality: '4K DOLBY VISION',
-                iframe: `<iframe
-      src="https://example.com/interstellar"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_INTERSTELLAR_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             },
             movie2: {
                 name: 'The Lord of the Rings',
                 description: 'Un hobbit doit détruire un anneau maléfique pour sauver la Terre du Milieu',
                 quality: '4K HDR',
-                iframe: `<iframe
-      src="https://example.com/lotr"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_LOTR_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             },
             movie3: {
                 name: 'The Matrix',
                 description: 'Un hacker découvre que la réalité est une simulation créée par des machines',
                 quality: 'HD REMASTERED',
-                iframe: `<iframe
-      src="https://example.com/matrix"
-      style="
-         position:absolute;
-         top:0;
-         left:0;
-         width:100%;
-         height:100%;
-         border:0;
-      ">
-</iframe>`
+                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_MATRIX_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             }
         };
         
@@ -1140,15 +947,14 @@
                 player.innerHTML = iframeCode;
                 loading.style.display = 'none';
                 
-                // Appliquer le style pour s'assurer qu'il remplit le cadre
+                // Ajuster l'iframe pour remplir le container
                 const iframe = player.querySelector('iframe');
                 if (iframe) {
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
                     iframe.style.position = 'absolute';
                     iframe.style.top = '0';
                     iframe.style.left = '0';
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = '0';
                 }
             }, 1000);
         }
@@ -1188,7 +994,7 @@
         // ==================== INITIALISATION ====================
         
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎬 NEO TV - Navigation simplifiée');
+            console.log('🎬 NEO TV - Format iframe unique');
             
             // Montrer la section LIVE TV par défaut
             showSection('live-tv');
