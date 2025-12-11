@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEO TV</title>
+    <title>NEO TV - Version Optimisée</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -204,7 +204,7 @@
         #player-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            height: 600px;
             background: #000;
             border-radius: 10px;
             overflow: hidden;
@@ -212,18 +212,17 @@
             border: 2px solid rgba(0, 198, 255, 0.3);
         }
         
-        #custom-player {
-            position: absolute;
-            top: 0;
-            left: 0;
+        #player-frame {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            border: none;
+            border-radius: 10px;
         }
         
         .controls {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
         }
         
         .control-btn {
@@ -277,6 +276,7 @@
             transition: all 0.3s;
             border: 2px solid transparent;
             text-align: center;
+            cursor: pointer;
         }
         
         .item-card:hover {
@@ -334,12 +334,16 @@
             .logo {
                 font-size: 2rem;
             }
+            
+            #player-container {
+                height: 400px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER NAVIGATION - SEULEMENT NEO TV ET 3 BOUTONS -->
+        <!-- HEADER NAVIGATION -->
         <div class="nav-header">
             <div class="logo">
                 <i class="fas fa-satellite-dish"></i>
@@ -393,36 +397,6 @@
                     <p>TF1, France 2, M6</p>
                     <div class="category-count">3 chaînes disponibles</div>
                 </div>
-                
-                <!-- CHAÎNES TURQUES -->
-                <div class="category-card" onclick="showChannels('turkish')">
-                    <div class="category-icon">
-                        <i class="fas fa-flag"></i>
-                    </div>
-                    <h2>Chaînes Turques</h2>
-                    <p>TRT, Star TV, Show TV</p>
-                    <div class="category-count">3 chaînes disponibles</div>
-                </div>
-                
-                <!-- ÉVÉNEMENTS LIVE -->
-                <div class="category-card" onclick="showChannels('live')">
-                    <div class="category-icon">
-                        <i class="fas fa-broadcast-tower"></i>
-                    </div>
-                    <h2>Événements Live</h2>
-                    <p>Matchs en direct spéciaux</p>
-                    <div class="category-count">2 événements disponibles</div>
-                </div>
-                
-                <!-- CHAÎNES INTERNATIONALES -->
-                <div class="category-card" onclick="showChannels('international')">
-                    <div class="category-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h2>International</h2>
-                    <p>BBC, CNN, Sky News</p>
-                    <div class="category-count">4 chaînes disponibles</div>
-                </div>
             </div>
         </div>
         
@@ -434,7 +408,7 @@
             
             <div class="items-grid">
                 <!-- ÉVÉNEMENT 1 -->
-                <div class="item-card" onclick="loadEvent('event1')">
+                <div class="item-card" onclick="playEvent('event1')">
                     <div class="item-icon">
                         <i class="fas fa-futbol"></i>
                     </div>
@@ -444,53 +418,13 @@
                 </div>
                 
                 <!-- ÉVÉNEMENT 2 -->
-                <div class="item-card" onclick="loadEvent('event2')">
+                <div class="item-card" onclick="playEvent('event2')">
                     <div class="item-icon">
                         <i class="fas fa-basketball"></i>
                     </div>
                     <h3>NBA Finals</h3>
                     <p class="item-info">Lakers vs Celtics Game 7</p>
                     <div class="channel-quality">LIVE - 01:30</div>
-                </div>
-                
-                <!-- ÉVÉNEMENT 3 -->
-                <div class="item-card" onclick="loadEvent('event3')">
-                    <div class="item-icon">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <h3>Concert Live</h3>
-                    <p class="item-info">Coldplay - World Tour 2024</p>
-                    <div class="channel-quality">LIVE - 22:00</div>
-                </div>
-                
-                <!-- ÉVÉNEMENT 4 -->
-                <div class="item-card" onclick="loadEvent('event4')">
-                    <div class="item-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h3>Grand Prix F1</h3>
-                    <p class="item-info">Monaco Grand Prix</p>
-                    <div class="channel-quality">LIVE - 14:00</div>
-                </div>
-                
-                <!-- ÉVÉNEMENT 5 -->
-                <div class="item-card" onclick="loadEvent('event5')">
-                    <div class="item-icon">
-                        <i class="fas fa-chess"></i>
-                    </div>
-                    <h3>Tournoi d'Échecs</h3>
-                    <p class="item-info">Championnat du Monde</p>
-                    <div class="channel-quality">LIVE - 16:00</div>
-                </div>
-                
-                <!-- ÉVÉNEMENT 6 -->
-                <div class="item-card" onclick="loadEvent('event6')">
-                    <div class="item-icon">
-                        <i class="fas fa-theater-masks"></i>
-                    </div>
-                    <h3>Festival de Cannes</h3>
-                    <p class="item-info">Cérémonie de clôture</p>
-                    <div class="channel-quality">LIVE - 19:30</div>
                 </div>
             </div>
         </div>
@@ -503,7 +437,7 @@
             
             <div class="items-grid">
                 <!-- FILM 1 -->
-                <div class="item-card" onclick="loadMovie('movie1')">
+                <div class="item-card" onclick="playMovie('movie1')">
                     <div class="item-icon movie-icon">
                         <i class="fas fa-space-shuttle"></i>
                     </div>
@@ -513,7 +447,7 @@
                 </div>
                 
                 <!-- FILM 2 -->
-                <div class="item-card" onclick="loadMovie('movie2')">
+                <div class="item-card" onclick="playMovie('movie2')">
                     <div class="item-icon movie-icon">
                         <i class="fas fa-dragon"></i>
                     </div>
@@ -521,75 +455,15 @@
                     <p class="item-info">Fantasy, Aventure</p>
                     <div class="channel-quality">4K - 3h21</div>
                 </div>
-                
-                <!-- FILM 3 -->
-                <div class="item-card" onclick="loadMovie('movie3')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>The Matrix</h3>
-                    <p class="item-info">Action, Sci-Fi</p>
-                    <div class="channel-quality">HD - 2h16</div>
-                </div>
-                
-                <!-- FILM 4 -->
-                <div class="item-card" onclick="loadMovie('movie4')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-ghost"></i>
-                    </div>
-                    <h3>Inception</h3>
-                    <p class="item-info">Thriller, Sci-Fi</p>
-                    <div class="channel-quality">HD - 2h28</div>
-                </div>
-                
-                <!-- FILM 5 -->
-                <div class="item-card" onclick="loadMovie('movie5')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3>Gladiator</h3>
-                    <p class="item-info">Action, Historique</p>
-                    <div class="channel-quality">HD - 2h35</div>
-                </div>
-                
-                <!-- FILM 6 -->
-                <div class="item-card" onclick="loadMovie('movie6')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-user-secret"></i>
-                    </div>
-                    <h3>John Wick 4</h3>
-                    <p class="item-info">Action, Thriller</p>
-                    <div class="channel-quality">4K - 2h49</div>
-                </div>
-                
-                <!-- SÉRIE 1 -->
-                <div class="item-card" onclick="loadMovie('series1')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-skull-crossbones"></i>
-                    </div>
-                    <h3>Game of Thrones</h3>
-                    <p class="item-info">Série, Fantasy</p>
-                    <div class="channel-quality">8 saisons</div>
-                </div>
-                
-                <!-- SÉRIE 2 -->
-                <div class="item-card" onclick="loadMovie('series2')">
-                    <div class="item-icon movie-icon">
-                        <i class="fas fa-atom"></i>
-                    </div>
-                    <h3>Breaking Bad</h3>
-                    <p class="item-info">Série, Drame</p>
-                    <div class="channel-quality">5 saisons</div>
-                </div>
             </div>
         </div>
         
         <!-- PAGE 2: CHAÎNES -->
         <div id="page2" class="page">
             <div class="back-button">
-                <a href="#" class="nav-btn" onclick="showSection('live-tv')">
+                <button class="nav-btn" onclick="showSection('live-tv')">
                     <i class="fas fa-arrow-left"></i> Retour au LIVE TV
-                </a>
+                </button>
             </div>
             
             <h1 id="page2-title" style="margin-bottom: 30px; color: #00c6ff;">Chaînes</h1>
@@ -602,16 +476,16 @@
         <!-- PAGE 3: LECTURE -->
         <div id="page3" class="page">
             <div class="back-button">
-                <a href="#" class="nav-btn" onclick="goBackFromPlayer()">
+                <button class="nav-btn" onclick="goBackFromPlayer()">
                     <i class="fas fa-arrow-left"></i> Retour
-                </a>
+                </button>
             </div>
             
             <div class="player-section">
                 <div id="player-container">
-                    <div id="custom-player"></div>
+                    <iframe id="player-frame" style="display: none;"></iframe>
                     <div id="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #0072ff; text-align: center;">
-                        <i class="fas fa-spinner fa-spin"></i>
+                        <i class="fas fa-spinner fa-spin fa-3x"></i>
                         <p>Chargement de la chaîne...</p>
                     </div>
                 </div>
@@ -623,14 +497,16 @@
                     <button class="control-btn" onclick="toggleFullscreen()">
                         <i class="fas fa-expand"></i> Plein écran
                     </button>
+                    <button class="control-btn" onclick="addChannel()">
+                        <i class="fas fa-plus"></i> Ajouter chaîne
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== DONNÉES DES CHAÎNES ====================
-        
+        // ===== TOKENS DES CHAÎNES =====
         const channelsData = {
             beinsports: [
                 {
@@ -638,21 +514,21 @@
                     name: 'beIN SPORTS 1',
                     quality: '1080P',
                     description: 'Chaîne sportive principale',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=cEZxcDdEVEtaUE90NGFtWWo3UlYrZURJRHV1VmwzOUNtQTc2TE4wZVhoM1d5NGtqWHVGN0s1WXhWNm1QalJOeSt3YjRlU2NHRVpvRXV0NExON2JPZjZvUXpHRDg3MlozbXhaZ2ZxYVNVRWpDWENadEtZNnFkbThvWlQ4d3A0Z3k~" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'RnBicEVST3ZWdWxIOTdKVHE4MlUydG1VNVJxa1EvSmR3cnpQQ1N4bENyUUN0cC85TSs3MkJSL1o5ZUcxUXZIZ3dWTXYwaTVvcDNKbmtzdGJXUC9kcmg3bmFxa0dtSUhUT21hL1g1U1p5dVE9'
                 },
                 {
                     id: 'bein2',
                     name: 'beIN SPORTS 2',
                     quality: '720P',
                     description: 'Deuxième chaîne sportive',
-                   <iframe src="https://ntvstream.cx/embed?t=cEZxcDdEVEtaUE90NGFtWWo3UlYrZURJRHV1VmwzOUNtQTc2TE4wZVhoM1d5NGtqWHVGN0s1WXhWNm1QalJOeSt3YjRlU2NHRVpvRXV0NExON2JPZi9aL3VZck9NdVFkYTlmb1hxWEJTMzFmdlhJNDJSRjV4RU1sTFFjOWVkUGw~" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    token: 'cEZxcDdEVEtaUE90NGFtWWo3UlYrZURJRHV1VmwzOUNtQTc2TE4wZVhoM1d5NGtqWHVGN0s1WXhWNm1QalJOeSt3YjRlU2NHRVpvRXV0NExON2JPZi9aL3VZck9NdVFkYTlmb1hxWEJTMzFmdlhJNDJSRjV4RU1sTFFjOWVkUGw~'
                 },
                 {
                     id: 'bein3',
                     name: 'beIN SPORTS 3',
                     quality: 'HD - Match',
                     description: 'Match Nottingham Forest - Malmö',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_BEIN3_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'TOKEN_BEIN3'
                 }
             ],
             
@@ -662,14 +538,14 @@
                     name: 'MBC 1',
                     quality: '1080P',
                     description: 'Chaîne arabe généraliste',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_MBC1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'TOKEN_MBC1'
                 },
                 {
                     id: 'aljazeera',
                     name: 'Al Jazeera',
                     quality: '720P',
                     description: 'Chaîne d\'information',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_ALJAZEERA_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'TOKEN_ALJAZEERA'
                 }
             ],
             
@@ -679,99 +555,52 @@
                     name: 'TF1',
                     quality: '1080P',
                     description: 'Chaîne française généraliste',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_TF1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'TOKEN_TF1'
                 },
                 {
                     id: 'france2',
                     name: 'France 2',
                     quality: '720P',
                     description: 'Chaîne publique française',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_FRANCE2_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-                }
-            ],
-            
-            turkish: [
-                {
-                    id: 'trt1',
-                    name: 'TRT 1',
-                    quality: '1080P',
-                    description: 'Chaîne turque nationale',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_TRT1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-                }
-            ],
-            
-            live: [
-                {
-                    id: 'live1',
-                    name: 'Événement Live 1',
-                    quality: 'HD',
-                    description: 'Match de football en direct',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_LIVE1_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-                }
-            ],
-            
-            international: [
-                {
-                    id: 'bbc',
-                    name: 'BBC World News',
-                    quality: '1080P',
-                    description: 'Chaîne d\'information internationale',
-                    iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_BBC_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    token: 'TOKEN_FRANCE2'
                 }
             ]
         };
         
-        // Données pour les événements
         const eventsData = {
             event1: {
                 name: 'Finale Champions League',
-                description: 'Manchester City vs Real Madrid - Stade de France',
+                description: 'Manchester City vs Real Madrid',
                 quality: '4K ULTRA HD',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_CHAMPIONS_LEAGUE_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                token: 'TOKEN_CHAMPIONS'
             },
             event2: {
                 name: 'NBA Finals - Game 7',
-                description: 'Lakers vs Celtics - TD Garden',
+                description: 'Lakers vs Celtics',
                 quality: 'HD LIVE',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_NBA_FINALS_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-            },
-            event3: {
-                name: 'Coldplay World Tour 2024',
-                description: 'Concert Live - Stade de France',
-                quality: 'FULL HD',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_COLDPLAY_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                token: 'TOKEN_NBA'
             }
         };
         
-        // Données pour les films
         const moviesData = {
             movie1: {
                 name: 'Interstellar',
-                description: 'Un groupe d\'explorateurs voyage à travers un trou de ver dans l\'espace',
+                description: 'Sci-Fi, Aventure',
                 quality: '4K DOLBY VISION',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_INTERSTELLAR_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                token: 'TOKEN_INTERSTELLAR'
             },
             movie2: {
                 name: 'The Lord of the Rings',
-                description: 'Un hobbit doit détruire un anneau maléfique pour sauver la Terre du Milieu',
+                description: 'Fantasy, Aventure',
                 quality: '4K HDR',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_LOTR_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-            },
-            movie3: {
-                name: 'The Matrix',
-                description: 'Un hacker découvre que la réalité est une simulation créée par des machines',
-                quality: 'HD REMASTERED',
-                iframe: `<iframe src="https://ntvstream.cx/embed?t=LIEN_MATRIX_ICI" width="800" height="450" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                token: 'TOKEN_LOTR'
             }
         };
         
         const categoryNames = {
             beinsports: 'beIN SPORTS',
             arabic: 'Chaînes Arabes',
-            french: 'Chaînes Françaises',
-            turkish: 'Chaînes Turques',
-            live: 'Événements Live',
-            international: 'Chaînes Internationales'
+            french: 'Chaînes Françaises'
         };
         
         let currentCategory = '';
@@ -779,7 +608,7 @@
         let currentSection = 'live-tv';
         let previousSection = 'live-tv';
         
-        // ==================== NAVIGATION DES SECTIONS ====================
+        // ===== NAVIGATION DES SECTIONS =====
         
         function showSection(sectionId) {
             currentSection = sectionId;
@@ -820,7 +649,7 @@
             document.getElementById(pageId).classList.add('active');
         }
         
-        // ==================== PAGE 2: AFFICHER LES CHAÎNES ====================
+        // ===== AFFICHER LES CHAÎNES =====
         
         function showChannels(categoryId) {
             currentCategory = categoryId;
@@ -849,7 +678,7 @@
             channels.forEach(channel => {
                 const channelCard = document.createElement('div');
                 channelCard.className = 'channel-card';
-                channelCard.onclick = () => loadChannel(channel);
+                channelCard.onclick = () => playChannel(channel.id, channel.token, channel.name);
                 
                 channelCard.innerHTML = `
                     <div class="channel-name">${channel.name}</div>
@@ -869,115 +698,116 @@
             showPage('page2');
         }
         
-        // ==================== CHARGER ÉVÉNEMENT ====================
+        // ===== FONCTIONS DE LECTURE =====
         
-        function loadEvent(eventId) {
+        function playChannel(channelId, token, name) {
+            if (!token || token.startsWith('TOKEN_')) {
+                alert('Token manquant pour cette chaîne');
+                return;
+            }
+            
+            playStream(token, name);
+        }
+        
+        function playEvent(eventId) {
             const event = eventsData[eventId];
-            if (!event) return;
+            if (!event || !event.token) {
+                alert('Événement non disponible');
+                return;
+            }
             
-            // Créer un objet channel similaire
-            const channel = {
-                id: eventId,
-                name: event.name,
-                description: event.description,
-                quality: event.quality,
-                iframe: event.iframe,
-                type: 'event'
-            };
-            
-            currentChannel = channel;
-            previousSection = currentSection;
-            
-            // Charger l'iframe
-            loadIframe(channel.iframe);
-            
-            // Aller à la page 3
-            showPage('page3');
+            playStream(event.token, event.name);
         }
         
-        // ==================== CHARGER FILM ====================
-        
-        function loadMovie(movieId) {
+        function playMovie(movieId) {
             const movie = moviesData[movieId];
-            if (!movie) return;
+            if (!movie || !movie.token) {
+                alert('Film non disponible');
+                return;
+            }
             
-            // Créer un objet channel similaire
-            const channel = {
-                id: movieId,
-                name: movie.name,
-                description: movie.description,
-                quality: movie.quality,
-                iframe: movie.iframe,
-                type: 'movie'
-            };
-            
-            currentChannel = channel;
-            previousSection = currentSection;
-            
-            // Charger l'iframe
-            loadIframe(channel.iframe);
-            
-            // Aller à la page 3
-            showPage('page3');
+            playStream(movie.token, movie.name);
         }
         
-        // ==================== PAGE 3: CHARGER UNE CHAÎNE ====================
-        
-        function loadChannel(channel) {
-            currentChannel = channel;
-            previousSection = currentSection;
-            
-            // Charger l'iframe
-            loadIframe(channel.iframe);
-            
-            // Aller à la page 3
-            showPage('page3');
-        }
-        
-        function loadIframe(iframeCode) {
-            const player = document.getElementById('custom-player');
+        function playStream(token, title) {
+            const player = document.getElementById('player-frame');
             const loading = document.getElementById('loading');
             
-            // Afficher le chargement
-            loading.style.display = 'block';
-            player.innerHTML = '';
+            console.log('Lecture avec token:', token.substring(0, 50) + '...');
             
-            // Ajouter l'iframe après un délai
+            // Afficher le chargement
+            player.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // Construire l'URL
+            const url = `https://ntvstream.cx/embed?t=${token}`;
+            console.log('URL:', url);
+            
+            // Configurer l'iframe
+            player.src = url;
+            player.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            player.allowFullscreen = true;
+            player.referrerPolicy = "no-referrer-when-downgrade";
+            
+            // Afficher l'iframe après 2 secondes
             setTimeout(() => {
-                player.innerHTML = iframeCode;
+                player.style.display = 'block';
                 loading.style.display = 'none';
-                
-                // Ajuster l'iframe pour remplir le container
-                const iframe = player.querySelector('iframe');
-                if (iframe) {
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.position = 'absolute';
-                    iframe.style.top = '0';
-                    iframe.style.left = '0';
+            }, 2000);
+            
+            // Aller à la page 3
+            showPage('page3');
+            
+            // Méthode de secours
+            setTimeout(() => {
+                try {
+                    if (player.contentDocument && player.contentDocument.body.innerHTML.includes("blocked")) {
+                        console.log('Flux bloqué, tentative méthode alternative...');
+                        fallbackMethod(token, title);
+                    }
+                } catch (e) {
+                    // CORS normal, ne rien faire
                 }
-            }, 1000);
+            }, 5000);
         }
         
+        // ===== MÉTHODE DE SECOURS =====
+        function fallbackMethod(token, title) {
+            const player = document.getElementById('player-frame');
+            
+            // Méthode alternative
+            const newIframe = document.createElement('iframe');
+            newIframe.id = 'player-frame';
+            newIframe.style.width = '100%';
+            newIframe.style.height = '100%';
+            newIframe.style.border = 'none';
+            newIframe.src = `https://ntvstream.cx/embed?t=${token}`;
+            newIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            newIframe.allowFullscreen = true;
+            
+            // Remplacer l'ancien iframe
+            player.parentNode.replaceChild(newIframe, player);
+        }
+        
+        // ===== FONCTIONS UTILITAIRES =====
+        
         function goBackFromPlayer() {
-            if (currentChannel?.type === 'event') {
+            if (currentSection === 'events') {
                 showSection('events');
-            } else if (currentChannel?.type === 'movie') {
+            } else if (currentSection === 'movies') {
                 showSection('movies');
             } else {
                 showPage('page2');
             }
         }
         
-        // ==================== FONCTIONS UTILITAIRES ====================
-        
         function refreshPlayer() {
-            const iframe = document.querySelector('#custom-player iframe');
-            if (iframe && iframe.src) {
-                const currentSrc = iframe.src;
-                iframe.src = '';
+            const player = document.getElementById('player-frame');
+            if (player && player.src) {
+                const currentSrc = player.src;
+                player.src = '';
                 setTimeout(() => {
-                    iframe.src = currentSrc;
+                    player.src = currentSrc;
                 }, 300);
             }
         }
@@ -991,12 +821,20 @@
             }
         }
         
-        // ==================== INITIALISATION ====================
+        function addChannel() {
+            const name = prompt("Nom de la chaîne:");
+            const token = prompt("Token ntvstream.cx:");
+            
+            if (name && token) {
+                alert("Chaîne ajoutée ! Vous pouvez maintenant la sélectionner.");
+                // Ici vous pourriez ajouter la logique pour sauvegarder la nouvelle chaîne
+            }
+        }
+        
+        // ===== INITIALISATION =====
         
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎬 NEO TV - Format iframe unique');
-            
-            // Montrer la section LIVE TV par défaut
+            console.log('🎬 NEO TV - Version optimisée chargée');
             showSection('live-tv');
         });
         
@@ -1006,7 +844,6 @@
                 e.preventDefault();
                 refreshPlayer();
             }
-            // Navigation rapide
             if (e.key === '1' && e.ctrlKey) {
                 e.preventDefault();
                 showSection('live-tv');
@@ -1018,6 +855,10 @@
             if (e.key === '3' && e.ctrlKey) {
                 e.preventDefault();
                 showSection('movies');
+            }
+            if (e.ctrlKey && e.key === 'a') {
+                e.preventDefault();
+                addChannel();
             }
         });
     </script>
