@@ -281,6 +281,38 @@
             resize: vertical;
         }
         
+        /* ===== STYLE IFRAME PAR DÉFAUT ===== */
+        .iframe-styles {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .style-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: white;
+            padding: 8px;
+            width: 100%;
+        }
+        
+        .style-input label {
+            display: block;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+        
+        .style-input input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 0;
+        }
+        
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .categories-grid,
@@ -297,6 +329,10 @@
             .nav-buttons {
                 flex-wrap: wrap;
                 justify-content: center;
+            }
+            
+            .iframe-styles {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -434,34 +470,55 @@
                     <button class="control-btn" onclick="showIframeEditor()">
                         <i class="fas fa-code"></i> Éditer l'iframe
                     </button>
+                    <button class="control-btn" onclick="resetPosition()" style="background: rgba(220, 53, 69, 0.3);">
+                        <i class="fas fa-sync-alt"></i> Réinitialiser
+                    </button>
                 </div>
             </div>
             
             <!-- ÉDITEUR IFRAME (caché par défaut) -->
             <div class="iframe-editor" id="iframe-editor" style="display: none;">
-                <h3><i class="fas fa-edit"></i> Éditeur de Code Iframe</h3>
-                <textarea class="code-area" id="iframe-code" spellcheck="false">
-<iframe src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay; fullscreen" 
-        allowfullscreen>
-</iframe>
-                </textarea>
-                <div style="display: flex; gap: 10px;">
+                <h3><i class="fas fa-edit"></i> Éditeur de Position Iframe</h3>
+                
+                <!-- Contrôles de position -->
+                <div class="iframe-styles">
+                    <div class="style-input">
+                        <label>Position Top (px ou %) :</label>
+                        <input type="text" id="style-top" value="-40px" onchange="updateIframeStyle()">
+                    </div>
+                    <div class="style-input">
+                        <label>Position Left (px ou %) :</label>
+                        <input type="text" id="style-left" value="-30px" onchange="updateIframeStyle()">
+                    </div>
+                    <div class="style-input">
+                        <label>Largeur (px ou %) :</label>
+                        <input type="text" id="style-width" value="60%" onchange="updateIframeStyle()">
+                    </div>
+                    <div class="style-input">
+                        <label>Hauteur (px ou %) :</label>
+                        <input type="text" id="style-height" value="80%" onchange="updateIframeStyle()">
+                    </div>
+                </div>
+                
+                <textarea class="code-area" id="iframe-code" spellcheck="false" oninput="parseIframeCode()"></textarea>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <button class="control-btn" onclick="updateIframe()" style="background: #28a745;">
                         <i class="fas fa-play"></i> Tester ce code
                     </button>
                     <button class="control-btn" onclick="saveIframe()" style="background: #0072ff;">
                         <i class="fas fa-save"></i> Sauvegarder
                     </button>
+                    <button class="control-btn" onclick="applyCurrentStyles()" style="background: #17a2b8;">
+                        <i class="fas fa-paint-brush"></i> Appliquer le style
+                    </button>
                     <button class="control-btn" onclick="hideIframeEditor()">
                         <i class="fas fa-times"></i> Fermer
                     </button>
                 </div>
+                
                 <p style="color: #aaa; margin-top: 10px; font-size: 0.9rem;">
-                    Modifiez les paramètres CSS (left, right, margin, etc.) directement dans le code
+                    <i class="fas fa-info-circle"></i> Utilisez px pour pixels ou % pour pourcentage
                 </p>
             </div>
         </div>
@@ -477,12 +534,16 @@
                     name: 'beIN SPORTS 1',
                     quality: '1080P',
                     description: 'Chaîne sportive principale',
-                    iframe: `<iframe src="https://s.streams-on.live/b-3/" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay; fullscreen" 
-        allowfullscreen>
+                    iframe: `<iframe
+      src="https://s.streams-on.live/b-3/"
+      style="
+         position:absolute;
+         top:-40px;
+         left:-30px;
+         width:60%;
+         height:80%;
+         border:0;
+      ">
 </iframe>`
                 },
                 {
@@ -490,14 +551,16 @@
                     name: 'beIN SPORTS 2',
                     quality: '720P',
                     description: 'Deuxième chaîne sportive',
-                    iframe: `<iframe src="https://www.live-match.tv/matches/%d8%a7%d9%84%d8%b9%d8%b1%d8%a7%d9%82-%d8%aa%d8%ad%d8%aa-23-%d9%88-%d8%a7%d9%84%d8%a5%d9%85%d8%a7%d8%b1%d8%a7%d8%aa-%d8%aa%d8%ad%d8%aa-23/" 
-        width="50%" 
-        height="70%" 
-         top:-150px;   /* distance depuis le haut */
-         left:-200px;  /* distance depuis la gauche */
-        frameborder="0" 
-        allow="autoplay; " 
-        >
+                    iframe: `<iframe
+      src="https://www.live-match.tv/matches/%d8%a7%d9%84%d8%b9%d8%b1%d8%a7%d9%82-%d8%aa%d8%ad%d8%aa-23-%d9%88-%d8%a7%d9%84%d8%a5%d9%85%d8%a7%d8%b1%d8%a7%d8%aa-%d8%aa%d8%ad%d8%aa-23/"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
 </iframe>`
                 },
                 {
@@ -505,12 +568,16 @@
                     name: 'beIN SPORTS 3',
                     quality: 'HD - Match',
                     description: 'Match Nottingham Forest - Malmö',
-                    iframe: `<iframe src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay; fullscreen" 
-        allowfullscreen>
+                    iframe: `<iframe
+      src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
 </iframe>`
                 }
             ],
@@ -521,12 +588,16 @@
                     name: 'MBC 1',
                     quality: '1080P',
                     description: 'Chaîne arabe généraliste',
-                    iframe: `<iframe src="https://embed.streamingtv.com/mbc1" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay; fullscreen" 
-        allowfullscreen>
+                    iframe: `<iframe
+      src="https://embed.streamingtv.com/mbc1"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
 </iframe>`
                 },
                 {
@@ -534,12 +605,93 @@
                     name: 'Al Jazeera',
                     quality: '720P',
                     description: 'Chaîne d\'information',
-                    iframe: `<iframe src="https://embed.iptvworld.tv/aljazeera" 
-        width="100%" 
-        height="100%" 
-        frameborder="0" 
-        allow="autoplay; fullscreen" 
-        allowfullscreen>
+                    iframe: `<iframe
+      src="https://embed.iptvworld.tv/aljazeera"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
+</iframe>`
+                }
+            ],
+            
+            french: [
+                {
+                    id: 'tf1',
+                    name: 'TF1',
+                    quality: '1080P',
+                    description: 'Chaîne française généraliste',
+                    iframe: `<iframe
+      src="https://example.com/tf1"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
+</iframe>`
+                },
+                {
+                    id: 'france2',
+                    name: 'France 2',
+                    quality: '720P',
+                    description: 'Chaîne publique française',
+                    iframe: `<iframe
+      src="https://example.com/france2"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
+</iframe>`
+                }
+            ],
+            
+            turkish: [
+                {
+                    id: 'trt1',
+                    name: 'TRT 1',
+                    quality: '1080P',
+                    description: 'Chaîne turque nationale',
+                    iframe: `<iframe
+      src="https://example.com/trt1"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
+</iframe>`
+                }
+            ],
+            
+            live: [
+                {
+                    id: 'live1',
+                    name: 'Événement Live 1',
+                    quality: 'HD',
+                    description: 'Match de football en direct',
+                    iframe: `<iframe
+      src="https://example.com/live1"
+      style="
+         position:absolute;
+         top:-150px;
+         left:-200px;
+         width:1200px;
+         height:1200px;
+         border:0;
+      ">
 </iframe>`
                 }
             ]
@@ -675,11 +827,11 @@
             document.getElementById('channel-description').textContent = channel.description;
             document.getElementById('channel-quality').textContent = channel.quality;
             
-            // Mettre à jour le code iframe dans l'éditeur
-            document.getElementById('iframe-code').value = channel.iframe;
-            
             // Charger l'iframe
             loadIframe(channel.iframe);
+            
+            // Extraire les styles de l'iframe pour les champs
+            parseIframeCodeForStyles(channel.iframe);
             
             // Aller à la page 3
             showPage('page3');
@@ -698,16 +850,114 @@
                 player.innerHTML = iframeCode;
                 loading.style.display = 'none';
                 
-                // Ajuster la taille de l'iframe
+                // Ajuster la taille de l'iframe si nécessaire
                 const iframe = player.querySelector('iframe');
                 if (iframe) {
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.position = 'absolute';
-                    iframe.style.top = '0';
-                    iframe.style.left = '0';
+                    // S'assurer que l'iframe prend tout l'espace
+                    if (!iframe.style.position || iframe.style.position === '') {
+                        iframe.style.position = 'absolute';
+                        iframe.style.top = '0';
+                        iframe.style.left = '0';
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                    }
                 }
             }, 1000);
+        }
+        
+        // ==================== GESTION DES STYLES IFRAME ====================
+        
+        function parseIframeCodeForStyles(iframeCode) {
+            // Mettre à jour l'éditeur de code
+            document.getElementById('iframe-code').value = iframeCode;
+            
+            // Extraire les styles pour les champs
+            const styleMatch = iframeCode.match(/style="([^"]+)"/);
+            if (styleMatch) {
+                const styleContent = styleMatch[1];
+                
+                // Extraire les valeurs
+                const topMatch = styleContent.match(/top:([^;]+)/);
+                const leftMatch = styleContent.match(/left:([^;]+)/);
+                const widthMatch = styleContent.match(/width:([^;]+)/);
+                const heightMatch = styleContent.match(/height:([^;]+)/);
+                
+                // Mettre à jour les champs
+                if (topMatch) document.getElementById('style-top').value = topMatch[1].trim();
+                if (leftMatch) document.getElementById('style-left').value = leftMatch[1].trim();
+                if (widthMatch) document.getElementById('style-width').value = widthMatch[1].trim();
+                if (heightMatch) document.getElementById('style-height').value = heightMatch[1].trim();
+            }
+        }
+        
+        function updateIframeStyle() {
+            // Récupérer les valeurs des champs
+            const top = document.getElementById('style-top').value;
+            const left = document.getElementById('style-left').value;
+            const width = document.getElementById('style-width').value;
+            const height = document.getElementById('style-height').value;
+            
+            // Construire le nouveau style
+            const newStyle = `
+         position:absolute;
+         top:${top};
+         left:${left};
+         width:${width};
+         height:${height};
+         border:0;
+      `;
+            
+            // Mettre à jour le code dans l'éditeur
+            const currentCode = document.getElementById('iframe-code').value;
+            const srcMatch = currentCode.match(/src="([^"]+)"/);
+            
+            if (srcMatch) {
+                const newCode = `<iframe
+      src="${srcMatch[1]}"
+      style="${newStyle.trim()}">
+</iframe>`;
+                document.getElementById('iframe-code').value = newCode;
+                
+                // Appliquer automatiquement si on est en mode édition
+                applyCurrentStyles();
+            }
+        }
+        
+        function parseIframeCode() {
+            // Quand l'utilisateur édite manuellement le code, extraire les styles
+            const code = document.getElementById('iframe-code').value;
+            parseIframeCodeForStyles(code);
+        }
+        
+        function applyCurrentStyles() {
+            const code = document.getElementById('iframe-code').value;
+            const player = document.getElementById('custom-player');
+            
+            // Mettre à jour l'iframe en direct
+            player.innerHTML = code;
+            
+            // Mettre à jour la chaîne courante
+            if (currentChannel) {
+                currentChannel.iframe = code;
+                updateChannelInData(currentChannel.id, code);
+            }
+        }
+        
+        function resetPosition() {
+            // Réinitialiser à la position par défaut selon la chaîne
+            if (currentChannel && currentChannel.id === 'bein1') {
+                document.getElementById('style-top').value = '-40px';
+                document.getElementById('style-left').value = '-30px';
+                document.getElementById('style-width').value = '60%';
+                document.getElementById('style-height').value = '80%';
+            } else {
+                document.getElementById('style-top').value = '-150px';
+                document.getElementById('style-left').value = '-200px';
+                document.getElementById('style-width').value = '1200px';
+                document.getElementById('style-height').value = '1200px';
+            }
+            
+            updateIframeStyle();
         }
         
         // ==================== ÉDITEUR IFRAME ====================
@@ -730,8 +980,6 @@
             // Mettre à jour la chaîne courante
             if (currentChannel) {
                 currentChannel.iframe = code;
-                
-                // Mettre à jour dans les données
                 updateChannelInData(currentChannel.id, code);
             }
             
@@ -793,6 +1041,7 @@
         function saveToLocalStorage() {
             try {
                 localStorage.setItem('neoTVChannels', JSON.stringify(channelsData));
+                console.log('Données sauvegardées');
             } catch (e) {
                 console.log('Impossible de sauvegarder');
             }
@@ -803,7 +1052,13 @@
                 const saved = localStorage.getItem('neoTVChannels');
                 if (saved) {
                     const savedData = JSON.parse(saved);
-                    Object.assign(channelsData, savedData);
+                    // Fusionner avec les données par défaut
+                    for (const category in savedData) {
+                        if (channelsData[category]) {
+                            channelsData[category] = savedData[category];
+                        }
+                    }
+                    console.log('Données chargées depuis localStorage');
                 }
             } catch (e) {
                 console.log('Erreur chargement sauvegarde');
