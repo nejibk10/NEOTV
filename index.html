@@ -3,372 +3,837 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEO TV - IPTV Gratuit</title>
+    <title>NEO TV - Navigation 3 Pages</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     
     <style>
-        /* Style de secours */
-        body {
+        /* ===== STYLES DE BASE ===== */
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             color: white;
-            font-family: Arial, sans-serif;
             min-height: 100vh;
+            line-height: 1.6;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
         
-        header {
-            text-align: center;
+        /* ===== NAVIGATION ===== */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 20px 0;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 30px;
         }
         
-        h1 {
-            font-size: 3rem;
-            color: #00c6ff;
-            margin-bottom: 10px;
+        .logo {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .player-section {
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(0, 114, 255, 0.3);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 114, 255, 0.5);
+        }
+        
+        .page-indicator {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== PAGE 1: CATÉGORIES ===== */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .category-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 198, 255, 0.3);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            color: #00c6ff;
+            margin-bottom: 15px;
+        }
+        
+        .category-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .category-count {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* ===== PAGE 2: CHAÎNES ===== */
+        .channels-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .channel-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #0072ff;
+        }
+        
+        .channel-card:hover {
+            background: rgba(0, 114, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .channel-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .channel-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .channel-quality {
+            background: rgba(0, 114, 255, 0.3);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .channel-action {
+            color: #00c6ff;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        /* ===== PAGE 3: LECTURE ===== */
+        .player-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
         }
         
         #player-container {
-            width: 100%;
-            height: 500px;
-            background: black;
-            border-radius: 10px;
-            margin-bottom: 15px;
             position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border-radius: 10px;
             overflow: hidden;
+            margin-bottom: 20px;
         }
         
-        #live-player {
+        #custom-player {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border: none;
         }
         
-        .player-placeholder {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: #666;
-        }
-        
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #0072ff;
-            text-align: center;
-        }
-        
-        .channel-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .channel-item {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 8px;
+        .channel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
             padding: 15px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         
-        .channel-item:hover {
-            background: rgba(0, 114, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .channel-item.active {
-            background: rgba(0, 114, 255, 0.5);
-            border-left: 4px solid #00c6ff;
+        .channel-header h2 {
+            color: #00c6ff;
         }
         
         .controls {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
         }
         
-        button {
+        .control-btn {
             padding: 10px 20px;
-            background: #0072ff;
-            color: white;
+            background: rgba(0, 114, 255, 0.3);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
+        .control-btn:hover {
+            background: rgba(0, 114, 255, 0.5);
         }
         
+        /* ===== ÉDITION IFRAME ===== */
+        .iframe-editor {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .iframe-editor h3 {
+            color: #00c6ff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code-area {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            #player-container {
-                height: 300px;
-            }
-            
-            .channel-list {
+            .categories-grid,
+            .channels-list {
                 grid-template-columns: 1fr;
+            }
+            
+            .nav-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-satellite-dish"></i> NEO TV</h1>
-            <p class="tagline">IPTV Gratuit - Diffusion en direct de chaînes du monde entier</p>
-        </header>
-        
-        <section class="player-section">
-            <div id="player-container">
-                <div class="player-placeholder" id="player-placeholder">
-                    <i class="fas fa-tv" style="font-size: 4rem; color: #0072ff; margin-bottom: 20px;"></i>
-                    <p>Sélectionnez une chaîne pour commencer la lecture</p>
-                </div>
-                <iframe id="live-player" frameborder="0" allowfullscreen style="display: none;"></iframe>
-                <div class="loading" id="loading" style="display: none;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                    <p>Chargement de la chaîne...</p>
-                </div>
+        <!-- HEADER NAVIGATION -->
+        <div class="nav-header">
+            <div class="logo">
+                <i class="fas fa-satellite-dish"></i>
+                NEO TV
             </div>
             
-            <div class="current-channel">
-                <h3 id="current-channel-name">Aucune chaîne sélectionnée</h3>
-                <p id="current-channel-desc">Cliquez sur une chaîne dans la liste ci-dessous</p>
+            <div class="nav-buttons">
+                <a href="#" class="nav-btn" onclick="showPage('page1')">
+                    <i class="fas fa-th-large"></i> Catégories
+                </a>
+                <a href="#" class="nav-btn" onclick="showPage('page2')" id="btn-page2" style="display: none;">
+                    <i class="fas fa-list"></i> Chaînes
+                </a>
+                <a href="#" class="nav-btn" onclick="showPage('page3')" id="btn-page3" style="display: none;">
+                    <i class="fas fa-play"></i> Lecture
+                </a>
             </div>
             
-            <div class="controls">
-                <button onclick="refreshPlayer()">
-                    <i class="fas fa-redo"></i> Actualiser
-                </button>
-                <button onclick="toggleFullscreen()">
-                    <i class="fas fa-expand"></i> Plein écran
-                </button>
-                <button onclick="showPageProgress(50)">
-                    <i class="fas fa-percentage"></i> Montrer 50%
-                </button>
+            <div class="page-indicator" id="page-indicator">
+                <i class="fas fa-th-large"></i> Catégories
             </div>
-        </section>
-        
-        <div class="channel-list">
-            <!-- beIN SPORTS -->
-            <button class="channel-item" 
-                    data-src="https://s.streams-on.live/b-3/" 
-                    data-name="beIN SPORTS 1" 
-                    data-quality="1080P">
-                <strong>beIN SPORTS 1</strong>
-                <br>
-                <small>1080P - Streams-on.live</small>
-            </button>
-            
-            <button class="channel-item" 
-                    data-src="https://v3.player.rcs.revma.com/1jqx8u7d1t7qu" 
-                    data-name="beIN SPORTS 2" 
-                    data-quality="720P">
-                <strong>beIN SPORTS 2</strong>
-                <br>
-                <small>720P - Revma Player</small>
-            </button>
-            
-            <!-- Chaînes Arabes -->
-            <button class="channel-item" 
-                    data-src="https://embed.streamingtv.com/mbc1" 
-                    data-name="MBC 1" 
-                    data-quality="1080P">
-                <strong>MBC 1</strong>
-                <br>
-                <small>1080P - Arabic TV</small>
-            </button>
-            
-            <button class="channel-item" 
-                    data-src="https://player.arabictv.net/mbc2" 
-                    data-name="MBC 2" 
-                    data-quality="720P">
-                <strong>MBC 2</strong>
-                <br>
-                <small>720P - Arabic TV</small>
-            </button>
-            
-            <!-- Chaînes Françaises -->
-            <button class="channel-item" 
-                    data-src="https://francetv.player.fr/tf1-live" 
-                    data-name="TF1" 
-                    data-quality="1080P">
-                <strong>TF1</strong>
-                <br>
-                <small>1080P - France TV</small>
-            </button>
-            
-            <button class="channel-item" 
-                    data-src="https://francetv.player.fr/france2-live" 
-                    data-name="France 2" 
-                    data-quality="720P">
-                <strong>France 2</strong>
-                <br>
-                <small>720P - France TV</small>
-            </button>
-            
-            <!-- Chaînes Turques -->
-            <button class="channel-item" 
-                    data-src="https://trtplayer.com/embed/trt1" 
-                    data-name="TRT 1" 
-                    data-quality="1080P">
-                <strong>TRT 1</strong>
-                <br>
-                <small>1080P - TRT Player</small>
-            </button>
-            
-            <!-- Événements en direct -->
-            <button class="channel-item" 
-                    data-src="https://livestream.embed.com/premierleague" 
-                    data-name="PREMIER LEAGUE" 
-                    data-quality="EN DIRECT"
-                    style="background: rgba(255, 50, 50, 0.2);">
-                <strong>PREMIER LEAGUE LIVE</strong>
-                <br>
-                <small>EN DIRECT - LiveStream</small>
-            </button>
         </div>
         
-        <footer>
-            <p><strong>NEO TV - Plateforme IPTV gratuite</strong></p>
-            <p>Chaque chaîne utilise une configuration iframe spécifique à sa source</p>
-            <p>© 2023 NEO TV. À but éducatif uniquement.</p>
-        </footer>
-    </div>
-    
-    <!-- Barre de progression -->
-    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.1); z-index: 1000; display: none;" id="progress-container">
-        <div style="height: 100%; background: #00c6ff; width: 50%; transition: width 0.3s;" id="progress-bar"></div>
-    </div>
-    
-    <div style="position: fixed; top: 15px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 8px 15px; border-radius: 20px; z-index: 1001; display: none; align-items: center; gap: 8px;" id="page-indicator">
-        <i class="fas fa-chart-bar"></i>
-        <span id="progress-text">50% de la page</span>
+        <!-- PAGE 1: CATÉGORIES -->
+        <div id="page1" class="page active">
+            <h1 style="margin-bottom: 30px; color: #00c6ff;">Sélectionnez une catégorie</h1>
+            
+            <div class="categories-grid">
+                <!-- beIN SPORTS -->
+                <div class="category-card" onclick="showChannels('beinsports')">
+                    <div class="category-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h2>beIN SPORTS</h2>
+                    <p>Chaînes sportives premium</p>
+                    <div class="category-count">3 chaînes disponibles</div>
+                </div>
+                
+                <!-- CHAÎNES ARABES -->
+                <div class="category-card" onclick="showChannels('arabic')">
+                    <div class="category-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h2>Chaînes Arabes</h2>
+                    <p>MBC, Al Jazeera, etc.</p>
+                    <div class="category-count">2 chaînes disponibles</div>
+                </div>
+                
+                <!-- CHAÎNES FRANÇAISES -->
+                <div class="category-card" onclick="showChannels('french')">
+                    <div class="category-icon">
+                        <i class="fas fa-tower-eiffel"></i>
+                    </div>
+                    <h2>Chaînes Françaises</h2>
+                    <p>TF1, France 2, M6</p>
+                    <div class="category-count">3 chaînes disponibles</div>
+                </div>
+                
+                <!-- CHAÎNES TURQUES -->
+                <div class="category-card" onclick="showChannels('turkish')">
+                    <div class="category-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <h2>Chaînes Turques</h2>
+                    <p>TRT, Star TV, Show TV</p>
+                    <div class="category-count">3 chaînes disponibles</div>
+                </div>
+                
+                <!-- ÉVÉNEMENTS LIVE -->
+                <div class="category-card" onclick="showChannels('live')">
+                    <div class="category-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <h2>Événements Live</h2>
+                    <p>Matchs en direct spéciaux</p>
+                    <div class="category-count">2 événements disponibles</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAGE 2: CHAÎNES -->
+        <div id="page2" class="page">
+            <div class="back-button">
+                <a href="#" class="nav-btn" onclick="showPage('page1')">
+                    <i class="fas fa-arrow-left"></i> Retour aux catégories
+                </a>
+            </div>
+            
+            <h1 id="page2-title" style="margin-bottom: 30px; color: #00c6ff;">Chaînes</h1>
+            
+            <div class="channels-list" id="channels-list">
+                <!-- Les chaînes seront chargées dynamiquement -->
+            </div>
+        </div>
+        
+        <!-- PAGE 3: LECTURE -->
+        <div id="page3" class="page">
+            <div class="back-button">
+                <a href="#" class="nav-btn" onclick="showPage('page2')">
+                    <i class="fas fa-arrow-left"></i> Retour aux chaînes
+                </a>
+            </div>
+            
+            <div class="channel-header">
+                <div>
+                    <h2 id="channel-title">beIN SPORTS 3</h2>
+                    <p id="channel-description">Match en direct</p>
+                </div>
+                <div class="channel-quality" id="channel-quality">HD</div>
+            </div>
+            
+            <div class="player-section">
+                <div id="player-container">
+                    <div id="custom-player"></div>
+                    <div id="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #0072ff; text-align: center;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Chargement de la chaîne...</p>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn" onclick="refreshPlayer()">
+                        <i class="fas fa-redo"></i> Actualiser
+                    </button>
+                    <button class="control-btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i> Plein écran
+                    </button>
+                    <button class="control-btn" onclick="showIframeEditor()">
+                        <i class="fas fa-code"></i> Éditer l'iframe
+                    </button>
+                </div>
+            </div>
+            
+            <!-- ÉDITEUR IFRAME (caché par défaut) -->
+            <div class="iframe-editor" id="iframe-editor" style="display: none;">
+                <h3><i class="fas fa-edit"></i> Éditeur de Code Iframe</h3>
+                <textarea class="code-area" id="iframe-code" spellcheck="false">
+<iframe src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>
+                </textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button class="control-btn" onclick="updateIframe()" style="background: #28a745;">
+                        <i class="fas fa-play"></i> Tester ce code
+                    </button>
+                    <button class="control-btn" onclick="saveIframe()" style="background: #0072ff;">
+                        <i class="fas fa-save"></i> Sauvegarder
+                    </button>
+                    <button class="control-btn" onclick="hideIframeEditor()">
+                        <i class="fas fa-times"></i> Fermer
+                    </button>
+                </div>
+                <p style="color: #aaa; margin-top: 10px; font-size: 0.9rem;">
+                    Modifiez les paramètres CSS (left, right, margin, etc.) directement dans le code
+                </p>
+            </div>
+        </div>
     </div>
 
-    <script src="script.js"></script>
-    
     <script>
-        // Script de secours si le fichier externe ne charge pas
-        if (typeof window.refreshPlayer === 'undefined') {
-            console.log('Chargement du script de secours...');
-            
-            // Fonctions basiques
-            window.refreshPlayer = function() {
-                const player = document.getElementById('live-player');
-                if (player.src) {
-                    player.src = player.src;
+        // ==================== DONNÉES DES CHAÎNES ====================
+        
+        const channelsData = {
+            beinsports: [
+                {
+                    id: 'bein1',
+                    name: 'beIN SPORTS 1',
+                    quality: '1080P',
+                    description: 'Chaîne sportive principale',
+                    iframe: `<iframe src="https://s.streams-on.live/b-3/" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>`
+                },
+                {
+                    id: 'bein2',
+                    name: 'beIN SPORTS 2',
+                    quality: '720P',
+                    description: 'Deuxième chaîne sportive',
+                    iframe: `<iframe src="https://www.live-match.tv/matches/%d8%a7%d9%84%d8%b9%d8%b1%d8%a7%d9%82-%d8%aa%d8%ad%d8%aa-23-%d9%88-%d8%a7%d9%84%d8%a5%d9%85%d8%a7%d8%b1%d8%a7%d8%aa-%d8%aa%d8%ad%d8%aa-23/" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>`
+                },
+                {
+                    id: 'bein3',
+                    name: 'beIN SPORTS 3',
+                    quality: 'HD - Match',
+                    description: 'Match Nottingham Forest - Malmö',
+                    iframe: `<iframe src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>`
                 }
-            };
+            ],
             
-            window.toggleFullscreen = function() {
-                const player = document.getElementById('live-player');
-                if (!document.fullscreenElement) {
-                    player.requestFullscreen().catch(err => {
-                        console.log(`Erreur plein écran: ${err.message}`);
-                    });
-                } else {
-                    document.exitFullscreen();
+            arabic: [
+                {
+                    id: 'mbc1',
+                    name: 'MBC 1',
+                    quality: '1080P',
+                    description: 'Chaîne arabe généraliste',
+                    iframe: `<iframe src="https://embed.streamingtv.com/mbc1" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>`
+                },
+                {
+                    id: 'aljazeera',
+                    name: 'Al Jazeera',
+                    quality: '720P',
+                    description: 'Chaîne d\'information',
+                    iframe: `<iframe src="https://embed.iptvworld.tv/aljazeera" 
+        width="100%" 
+        height="100%" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen>
+</iframe>`
                 }
-            };
-            
-            window.showPageProgress = function(percentage = 50) {
-                const container = document.getElementById('progress-container');
-                const indicator = document.getElementById('page-indicator');
-                const bar = document.getElementById('progress-bar');
-                const text = document.getElementById('progress-text');
-                
-                bar.style.width = percentage + '%';
-                text.textContent = percentage + '% de la page';
-                container.style.display = 'block';
-                indicator.style.display = 'flex';
-                
-                setTimeout(() => {
-                    container.style.display = 'none';
-                    indicator.style.display = 'none';
-                }, 5000);
-            };
-            
-            // Initialisation basique
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('Script de secours chargé');
-                
-                // Gérer les clics sur les chaînes
-                document.querySelectorAll('.channel-item').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const src = this.getAttribute('data-src');
-                        const name = this.getAttribute('data-name');
-                        const quality = this.getAttribute('data-quality');
-                        
-                        // Mettre à jour les informations
-                        document.getElementById('current-channel-name').textContent = name;
-                        document.getElementById('current-channel-desc').textContent = 'Lecture en cours - Qualité: ' + quality;
-                        
-                        // Mettre à jour l'iframe
-                        const player = document.getElementById('live-player');
-                        const placeholder = document.getElementById('player-placeholder');
-                        const loading = document.getElementById('loading');
-                        
-                        placeholder.style.display = 'none';
-                        loading.style.display = 'block';
-                        player.style.display = 'none';
-                        
-                        // Charger la chaîne
-                        setTimeout(() => {
-                            player.src = src;
-                            player.style.display = 'block';
-                            loading.style.display = 'none';
-                        }, 500);
-                        
-                        // Mettre à jour les boutons actifs
-                        document.querySelectorAll('.channel-item').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        this.classList.add('active');
-                    });
-                });
-                
-                // Charger la première chaîne automatiquement
-                setTimeout(() => {
-                    const firstButton = document.querySelector('.channel-item');
-                    if (firstButton) {
-                        firstButton.click();
-                    }
-                }, 1000);
+            ]
+        };
+        
+        const categoryNames = {
+            beinsports: 'beIN SPORTS',
+            arabic: 'Chaînes Arabes',
+            french: 'Chaînes Françaises',
+            turkish: 'Chaînes Turques',
+            live: 'Événements Live'
+        };
+        
+        let currentCategory = '';
+        let currentChannel = null;
+        
+        // ==================== NAVIGATION ====================
+        
+        function showPage(pageId) {
+            // Cacher toutes les pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
+            
+            // Afficher la page demandée
+            document.getElementById(pageId).classList.add('active');
+            
+            // Mettre à jour les boutons de navigation
+            updateNavButtons(pageId);
+            
+            // Mettre à jour l'indicateur
+            updatePageIndicator(pageId);
         }
+        
+        function updateNavButtons(pageId) {
+            const btnPage2 = document.getElementById('btn-page2');
+            const btnPage3 = document.getElementById('btn-page3');
+            
+            switch(pageId) {
+                case 'page1':
+                    btnPage2.style.display = 'none';
+                    btnPage3.style.display = 'none';
+                    break;
+                case 'page2':
+                    btnPage2.style.display = 'flex';
+                    btnPage3.style.display = 'none';
+                    break;
+                case 'page3':
+                    btnPage2.style.display = 'flex';
+                    btnPage3.style.display = 'flex';
+                    break;
+            }
+        }
+        
+        function updatePageIndicator(pageId) {
+            const indicator = document.getElementById('page-indicator');
+            let text = '';
+            let icon = '';
+            
+            switch(pageId) {
+                case 'page1':
+                    text = 'Catégories';
+                    icon = 'fas fa-th-large';
+                    break;
+                case 'page2':
+                    text = categoryNames[currentCategory] || 'Chaînes';
+                    icon = 'fas fa-list';
+                    break;
+                case 'page3':
+                    text = currentChannel?.name || 'Lecture';
+                    icon = 'fas fa-play';
+                    break;
+            }
+            
+            indicator.innerHTML = `<i class="${icon}"></i> ${text}`;
+        }
+        
+        // ==================== PAGE 2: AFFICHER LES CHAÎNES ====================
+        
+        function showChannels(categoryId) {
+            currentCategory = categoryId;
+            
+            // Mettre à jour le titre
+            document.getElementById('page2-title').textContent = categoryNames[categoryId] || 'Chaînes';
+            
+            // Charger les chaînes
+            const channelsList = document.getElementById('channels-list');
+            channelsList.innerHTML = '';
+            
+            const channels = channelsData[categoryId] || [];
+            
+            if (channels.length === 0) {
+                channelsList.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <p>Aucune chaîne disponible pour cette catégorie</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Ajouter chaque chaîne
+            channels.forEach(channel => {
+                const channelCard = document.createElement('div');
+                channelCard.className = 'channel-card';
+                channelCard.onclick = () => loadChannel(channel);
+                
+                channelCard.innerHTML = `
+                    <div class="channel-name">${channel.name}</div>
+                    <p style="color: #aaa; font-size: 0.9rem;">${channel.description}</p>
+                    <div class="channel-info">
+                        <div class="channel-quality">${channel.quality}</div>
+                        <div class="channel-action">
+                            <i class="fas fa-play-circle"></i> Regarder
+                        </div>
+                    </div>
+                `;
+                
+                channelsList.appendChild(channelCard);
+            });
+            
+            // Aller à la page 2
+            showPage('page2');
+        }
+        
+        // ==================== PAGE 3: CHARGER UNE CHAÎNE ====================
+        
+        function loadChannel(channel) {
+            currentChannel = channel;
+            
+            // Mettre à jour les informations
+            document.getElementById('channel-title').textContent = channel.name;
+            document.getElementById('channel-description').textContent = channel.description;
+            document.getElementById('channel-quality').textContent = channel.quality;
+            
+            // Mettre à jour le code iframe dans l'éditeur
+            document.getElementById('iframe-code').value = channel.iframe;
+            
+            // Charger l'iframe
+            loadIframe(channel.iframe);
+            
+            // Aller à la page 3
+            showPage('page3');
+        }
+        
+        function loadIframe(iframeCode) {
+            const player = document.getElementById('custom-player');
+            const loading = document.getElementById('loading');
+            
+            // Afficher le chargement
+            loading.style.display = 'block';
+            player.innerHTML = '';
+            
+            // Ajouter l'iframe après un délai
+            setTimeout(() => {
+                player.innerHTML = iframeCode;
+                loading.style.display = 'none';
+                
+                // Ajuster la taille de l'iframe
+                const iframe = player.querySelector('iframe');
+                if (iframe) {
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.position = 'absolute';
+                    iframe.style.top = '0';
+                    iframe.style.left = '0';
+                }
+            }, 1000);
+        }
+        
+        // ==================== ÉDITEUR IFRAME ====================
+        
+        function showIframeEditor() {
+            document.getElementById('iframe-editor').style.display = 'block';
+        }
+        
+        function hideIframeEditor() {
+            document.getElementById('iframe-editor').style.display = 'none';
+        }
+        
+        function updateIframe() {
+            const code = document.getElementById('iframe-code').value;
+            if (!code.trim()) {
+                alert('Veuillez entrer un code iframe valide');
+                return;
+            }
+            
+            // Mettre à jour la chaîne courante
+            if (currentChannel) {
+                currentChannel.iframe = code;
+                
+                // Mettre à jour dans les données
+                updateChannelInData(currentChannel.id, code);
+            }
+            
+            // Recharger l'iframe
+            loadIframe(code);
+            
+            alert('Iframe mise à jour avec succès!');
+        }
+        
+        function saveIframe() {
+            if (currentChannel) {
+                const code = document.getElementById('iframe-code').value;
+                currentChannel.iframe = code;
+                updateChannelInData(currentChannel.id, code);
+                
+                // Sauvegarder dans localStorage
+                saveToLocalStorage();
+                
+                alert('Code iframe sauvegardé!');
+            }
+        }
+        
+        function updateChannelInData(channelId, iframeCode) {
+            // Chercher et mettre à jour dans toutes les catégories
+            for (const category in channelsData) {
+                const channels = channelsData[category];
+                const index = channels.findIndex(ch => ch.id === channelId);
+                if (index !== -1) {
+                    channelsData[category][index].iframe = iframeCode;
+                    break;
+                }
+            }
+        }
+        
+        // ==================== FONCTIONS UTILITAIRES ====================
+        
+        function refreshPlayer() {
+            const iframe = document.querySelector('#custom-player iframe');
+            if (iframe && iframe.src) {
+                const currentSrc = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = currentSrc;
+                }, 300);
+            }
+        }
+        
+        function toggleFullscreen() {
+            const playerContainer = document.getElementById('player-container');
+            if (!document.fullscreenElement) {
+                playerContainer.requestFullscreen().catch(console.log);
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        // ==================== SAUVEGARDE ====================
+        
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('neoTVChannels', JSON.stringify(channelsData));
+            } catch (e) {
+                console.log('Impossible de sauvegarder');
+            }
+        }
+        
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('neoTVChannels');
+                if (saved) {
+                    const savedData = JSON.parse(saved);
+                    Object.assign(channelsData, savedData);
+                }
+            } catch (e) {
+                console.log('Erreur chargement sauvegarde');
+            }
+        }
+        
+        // ==================== INITIALISATION ====================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎬 NEO TV - Navigation 3 pages initialisée');
+            
+            // Charger la sauvegarde
+            loadFromLocalStorage();
+            
+            // Charger la première catégorie par défaut
+            setTimeout(() => {
+                showChannels('beinsports');
+            }, 500);
+        });
+        
+        // Raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('iframe-editor').style.display === 'block') {
+                    hideIframeEditor();
+                }
+            }
+            if (e.key === 'F5') {
+                e.preventDefault();
+                refreshPlayer();
+            }
+        });
     </script>
 </body>
 </html>
