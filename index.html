@@ -202,11 +202,12 @@
         #player-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
             background: #000;
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 20px;
+            border: 2px solid rgba(0, 198, 255, 0.3);
         }
         
         #custom-player {
@@ -215,6 +216,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            overflow: hidden;
         }
         
         .channel-header {
@@ -311,6 +313,18 @@
             border: none;
             color: white;
             padding: 5px 0;
+        }
+        
+        .preview-helper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+            pointer-events: none;
+            text-align: center;
+            z-index: 1;
         }
         
         /* ===== RESPONSIVE ===== */
@@ -458,6 +472,12 @@
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Chargement de la chaîne...</p>
                     </div>
+                    <div class="preview-helper" id="preview-helper" style="display: none;">
+                        <div style="margin-bottom: 10px; font-size: 18px;">Zone Visible</div>
+                        <div style="border: 2px dashed rgba(255,255,255,0.5); padding: 10px; border-radius: 5px;">
+                            Cadre du site = Cadre de l'iframe
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="controls">
@@ -470,8 +490,8 @@
                     <button class="control-btn" onclick="showIframeEditor()">
                         <i class="fas fa-code"></i> Éditer l'iframe
                     </button>
-                    <button class="control-btn" onclick="resetPosition()" style="background: rgba(220, 53, 69, 0.3);">
-                        <i class="fas fa-sync-alt"></i> Réinitialiser
+                    <button class="control-btn" onclick="showPreview()" id="preview-btn">
+                        <i class="fas fa-eye"></i> Aperçu
                     </button>
                 </div>
             </div>
@@ -480,37 +500,47 @@
             <div class="iframe-editor" id="iframe-editor" style="display: none;">
                 <h3><i class="fas fa-edit"></i> Éditeur de Position Iframe</h3>
                 
+                <div style="background: rgba(0, 114, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #00c6ff;">
+                    <h4 style="color: #00c6ff; margin-bottom: 10px;"><i class="fas fa-info-circle"></i> Pour correspondre exactement au cadre :</h4>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>width: 100%</strong> - Prend toute la largeur du cadre<br>
+                        <strong>height: 100%</strong> - Prend toute la hauteur du cadre<br>
+                        <strong>top: 0</strong> - Commence en haut du cadre<br>
+                        <strong>left: 0</strong> - Commence à gauche du cadre
+                    </p>
+                </div>
+                
                 <!-- Contrôles de position -->
                 <div class="iframe-styles">
                     <div class="style-input">
                         <label>Position Top (px ou %) :</label>
-                        <input type="text" id="style-top" value="-40px" onchange="updateIframeStyle()">
+                        <input type="text" id="style-top" value="0" onchange="updateIframeStyle()">
                     </div>
                     <div class="style-input">
                         <label>Position Left (px ou %) :</label>
-                        <input type="text" id="style-left" value="-30px" onchange="updateIframeStyle()">
+                        <input type="text" id="style-left" value="0" onchange="updateIframeStyle()">
                     </div>
                     <div class="style-input">
                         <label>Largeur (px ou %) :</label>
-                        <input type="text" id="style-width" value="60%" onchange="updateIframeStyle()">
+                        <input type="text" id="style-width" value="100%" onchange="updateIframeStyle()">
                     </div>
                     <div class="style-input">
                         <label>Hauteur (px ou %) :</label>
-                        <input type="text" id="style-height" value="80%" onchange="updateIframeStyle()">
+                        <input type="text" id="style-height" value="100%" onchange="updateIframeStyle()">
                     </div>
                 </div>
                 
                 <textarea class="code-area" id="iframe-code" spellcheck="false" oninput="parseIframeCode()"></textarea>
                 
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="control-btn" onclick="updateIframe()" style="background: #28a745;">
+                    <button class="control-btn" onclick="applyPerfectFit()" style="background: #28a745;">
+                        <i class="fas fa-expand-alt"></i> Ajuster parfaitement
+                    </button>
+                    <button class="control-btn" onclick="updateIframe()" style="background: #17a2b8;">
                         <i class="fas fa-play"></i> Tester ce code
                     </button>
                     <button class="control-btn" onclick="saveIframe()" style="background: #0072ff;">
                         <i class="fas fa-save"></i> Sauvegarder
-                    </button>
-                    <button class="control-btn" onclick="applyCurrentStyles()" style="background: #17a2b8;">
-                        <i class="fas fa-paint-brush"></i> Appliquer le style
                     </button>
                     <button class="control-btn" onclick="hideIframeEditor()">
                         <i class="fas fa-times"></i> Fermer
@@ -518,7 +548,7 @@
                 </div>
                 
                 <p style="color: #aaa; margin-top: 10px; font-size: 0.9rem;">
-                    <i class="fas fa-info-circle"></i> Utilisez px pour pixels ou % pour pourcentage
+                    <i class="fas fa-lightbulb"></i> Utilisez "Ajuster parfaitement" pour que l'iframe remplisse exactement le cadre du lecteur
                 </p>
             </div>
         </div>
@@ -538,10 +568,10 @@
       src="https://s.streams-on.live/b-3/"
       style="
          position:absolute;
-         top:-40px;
-         left:-30px;
-         width:60%;
-         height:80%;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -555,10 +585,10 @@
       src="https://www.live-match.tv/matches/%d8%a7%d9%84%d8%b9%d8%b1%d8%a7%d9%82-%d8%aa%d8%ad%d8%aa-23-%d9%88-%d8%a7%d9%84%d8%a5%d9%85%d8%a7%d8%b1%d8%a7%d8%aa-%d8%aa%d8%ad%d8%aa-23/"
       style="
          position:absolute;
-         top:-50px;
-         left:-200px;
-         width:200px;
-         height:200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -572,10 +602,10 @@
       src="https://myfootball.life/11510550-liga-evropy-2025-26-5-y-tur-nottingem-forest-malme.html"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -592,10 +622,10 @@
       src="https://embed.streamingtv.com/mbc1"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -609,10 +639,10 @@
       src="https://embed.iptvworld.tv/aljazeera"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -629,10 +659,10 @@
       src="https://example.com/tf1"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -646,10 +676,10 @@
       src="https://example.com/france2"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -666,10 +696,10 @@
       src="https://example.com/trt1"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -686,10 +716,10 @@
       src="https://example.com/live1"
       style="
          position:absolute;
-         top:-150px;
-         left:-200px;
-         width:1200px;
-         height:1200px;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
          border:0;
       ">
 </iframe>`
@@ -707,6 +737,7 @@
         
         let currentCategory = '';
         let currentChannel = null;
+        let previewMode = false;
         
         // ==================== NAVIGATION ====================
         
@@ -833,6 +864,9 @@
             // Extraire les styles de l'iframe pour les champs
             parseIframeCodeForStyles(channel.iframe);
             
+            // Désactiver le mode aperçu
+            hidePreview();
+            
             // Aller à la page 3
             showPage('page3');
         }
@@ -850,17 +884,15 @@
                 player.innerHTML = iframeCode;
                 loading.style.display = 'none';
                 
-                // Ajuster la taille de l'iframe si nécessaire
+                // Appliquer le style pour s'assurer qu'il remplit le cadre
                 const iframe = player.querySelector('iframe');
                 if (iframe) {
-                    // S'assurer que l'iframe prend tout l'espace
-                    if (!iframe.style.position || iframe.style.position === '') {
-                        iframe.style.position = 'absolute';
-                        iframe.style.top = '0';
-                        iframe.style.left = '0';
-                        iframe.style.width = '100%';
-                        iframe.style.height = '100%';
-                    }
+                    iframe.style.position = 'absolute';
+                    iframe.style.top = '0';
+                    iframe.style.left = '0';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = '0';
                 }
             }, 1000);
         }
@@ -917,9 +949,6 @@
       style="${newStyle.trim()}">
 </iframe>`;
                 document.getElementById('iframe-code').value = newCode;
-                
-                // Appliquer automatiquement si on est en mode édition
-                applyCurrentStyles();
             }
         }
         
@@ -929,35 +958,38 @@
             parseIframeCodeForStyles(code);
         }
         
-        function applyCurrentStyles() {
-            const code = document.getElementById('iframe-code').value;
-            const player = document.getElementById('custom-player');
+        function applyPerfectFit() {
+            // Appliquer les valeurs parfaites pour correspondre au cadre
+            document.getElementById('style-top').value = '0';
+            document.getElementById('style-left').value = '0';
+            document.getElementById('style-width').value = '100%';
+            document.getElementById('style-height').value = '100%';
             
-            // Mettre à jour l'iframe en direct
-            player.innerHTML = code;
+            updateIframeStyle();
+            updateIframe();
+        }
+        
+        // ==================== APERÇU VISUEL ====================
+        
+        function showPreview() {
+            const previewHelper = document.getElementById('preview-helper');
+            const previewBtn = document.getElementById('preview-btn');
             
-            // Mettre à jour la chaîne courante
-            if (currentChannel) {
-                currentChannel.iframe = code;
-                updateChannelInData(currentChannel.id, code);
+            if (!previewMode) {
+                previewMode = true;
+                previewHelper.style.display = 'block';
+                previewBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Masquer aperçu';
+                previewBtn.style.background = 'rgba(40, 167, 69, 0.3)';
+            } else {
+                hidePreview();
             }
         }
         
-        function resetPosition() {
-            // Réinitialiser à la position par défaut selon la chaîne
-            if (currentChannel && currentChannel.id === 'bein1') {
-                document.getElementById('style-top').value = '-40px';
-                document.getElementById('style-left').value = '-30px';
-                document.getElementById('style-width').value = '60%';
-                document.getElementById('style-height').value = '80%';
-            } else {
-                document.getElementById('style-top').value = '-150px';
-                document.getElementById('style-left').value = '-200px';
-                document.getElementById('style-width').value = '1200px';
-                document.getElementById('style-height').value = '1200px';
-            }
-            
-            updateIframeStyle();
+        function hidePreview() {
+            previewMode = false;
+            document.getElementById('preview-helper').style.display = 'none';
+            document.getElementById('preview-btn').innerHTML = '<i class="fas fa-eye"></i> Aperçu';
+            document.getElementById('preview-btn').style.background = '';
         }
         
         // ==================== ÉDITEUR IFRAME ====================
@@ -1085,10 +1117,15 @@
                 if (document.getElementById('iframe-editor').style.display === 'block') {
                     hideIframeEditor();
                 }
+                hidePreview();
             }
             if (e.key === 'F5') {
                 e.preventDefault();
                 refreshPlayer();
+            }
+            if (e.key === 'p' && e.ctrlKey) {
+                e.preventDefault();
+                showPreview();
             }
         });
     </script>
