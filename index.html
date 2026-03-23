@@ -862,16 +862,16 @@
             }
         });
     </script>
-  <script>
+ <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      // On utilise './sw.js' pour s'assurer qu'il cherche dans le dossier courant
-      navigator.serviceWorker.register('./sw.js')
+      // On ajoute le nom du dépôt /NEOTV/ pour que GitHub le trouve
+      navigator.serviceWorker.register('/NEOTV/sw.js')
         .then(function(reg) {
-          console.log('✅ Service Worker enregistré avec succès !');
+          console.log('✅ Service Worker NEOTV enregistré !');
         })
         .catch(function(err) {
-          console.error('❌ Erreur d\'enregistrement :', err);
+          console.error('❌ Erreur :', err);
         });
     });
   }
