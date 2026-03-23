@@ -862,5 +862,16 @@
             }
         });
     </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('Service Worker enregistré avec succès !');
+      })
+      .catch(function(err) {
+        console.log('Échec de l\'enregistrement :', err);
+      });
+  }
+</script>
 </body>
 </html>
