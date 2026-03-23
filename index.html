@@ -862,15 +862,18 @@
             }
         });
     </script>
-    <script>
+  <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(function(registration) {
-        console.log('Service Worker enregistré avec succès !');
-      })
-      .catch(function(err) {
-        console.log('Échec de l\'enregistrement :', err);
-      });
+    window.addEventListener('load', function() {
+      // On utilise './sw.js' pour s'assurer qu'il cherche dans le dossier courant
+      navigator.serviceWorker.register('./sw.js')
+        .then(function(reg) {
+          console.log('✅ Service Worker enregistré avec succès !');
+        })
+        .catch(function(err) {
+          console.error('❌ Erreur d\'enregistrement :', err);
+        });
+    });
   }
 </script>
 </body>
