@@ -6,12 +6,13 @@
 <title>CartoonFlix PRO - Admin</title>
 <style>
 body{margin:0;font-family:Arial;background:#141414;color:white;}
-.header{padding:20px;display:flex;justify-content:space-between;align-items:center;background:#141414;border-bottom:1px solid #333;}
-.header h1{color:#e50914;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:20px;background:#141414;border-bottom:1px solid #333;}
+.header h1{color:#e50914;font-size:2rem;}
 button{padding:6px 10px;border:none;border-radius:4px;cursor:pointer;}
 button.add{background:#e50914;color:white;}
 button.edit{background:#ffaa00;color:black;}
 button.delete{background:#ff3333;color:white;}
+button.quit{background:#555;color:white;}
 .grid{display:grid;grid-template-columns: repeat(auto-fill,minmax(180px,1fr));gap:15px;padding:20px;}
 .card{background:#222;border-radius:10px;overflow:hidden;transition:0.3s;padding:10px;}
 .card img{width:100%;height:150px;object-fit:cover;border-radius:5px;}
@@ -23,8 +24,11 @@ button.delete{background:#ff3333;color:white;}
 <body>
 
 <div class="header">
-    <h1>🎬 CartoonFlix Admin</h1>
-    <button class="add" onclick="addVideo()">➕ Ajouter</button>
+<h1>🎬 CartoonFlix Admin</h1>
+<div>
+<button class="add" onclick="addVideo()">➕ Ajouter</button>
+<button class="quit" onclick="quitAdmin()">↩️ Quitter</button>
+</div>
 </div>
 
 <div class="grid" id="videoList"></div>
@@ -32,55 +36,79 @@ button.delete{background:#ff3333;color:white;}
 <script>
 const ADMIN_PASSWORD="1234";
 (function(){
-    let pass=prompt("Mot de passe Admin ?");
-    if(pass!==ADMIN_PASSWORD){ alert("❌ Accès refusé !"); window.close(); }
+let pass=prompt("Mot de passe Admin ?");
+if(pass!==ADMIN_PASSWORD){ alert("❌ Accès refusé !"); window.close(); }
 })();
+
 let videos=JSON.parse(localStorage.getItem("videos"))||[];
 const categories = [
-  "3-5 ans","6-8 ans","9-12 ans",
-  "Après l'école","À regarder en famille","Podcasts",
-  "Séries animées","Films Comédie","Films Aventure"
+"3-5 ans","6-8 ans","9-12 ans",
+"Après l'école","À regarder en famille","Podcasts",
+"Séries animées","Films Comédie","Films Aventure"
 ];
+
 function saveVideos(){ localStorage.setItem("videos",JSON.stringify(videos)); displayVideos(); }
+
 function addVideo(){
-    let title=prompt("Nom de la vidéo ?");
-    if(!title) return;
-    let type=prompt("Type (youtube / external) ?");
-    if(!type) return;
-    let url=prompt("Lien vidéo ?");
-    if(!url) return;
-    let image=type==="youtube"?"https://img.youtube.com/vi/"+url.split("v=")[1]+"/hqdefault.jpg":prompt("Lien image ?");
-    let category=prompt("Catégorie ?\n"+categories.join(" | "));
-    videos.push({title,type,url,image,views:0,category});
-    saveVideos();
+let title=prompt("Nom de la vidéo ?");
+if(!title) return;
+let type=prompt("Type (youtube / external) ?");
+if(!type) return;
+let url=prompt("Lien vidéo ?");
+if(!url) return;
+let image=type==="youtube"?"https://img.youtube.com/vi/"+url.split("v=")[1]+"/hqdefault.jpg":prompt("Lien image ?");
+let category=prompt("Catégorie ?\n"+categories.join(" | "));
+videos.push({title,type,url,image,views:0,category});
+saveVideos();
 }
+
 function editVideo(i){
-    let v=videos[i];
-    let title=prompt("Nom ?",v.title); if(!title)return;
-    let type=prompt("Type (youtube / external)?",v.type);
-    let url=prompt("Lien ?",v.url);
-    let image=v.image;
-    if(type==="external") image=prompt("Lien image ?",v.image);
-    let category=prompt("Catégorie ?",v.category);
-    videos[i]={title,type,url,image,views:v.views,category};
-    saveVideos();
+let v=videos[i];
+let title=prompt("Nom ?",v.title); if(!title)return;
+let type=prompt("Type (youtube / external)?",v.type);
+let url=prompt("Lien ?",v.url);
+let image=v.image;
+if(type==="external") image=prompt("Lien image ?",v.image);
+let category=prompt("Catégorie ?",v.category);
+videos[i]={title,type,url,image,views:v.views,category};
+saveVideos();
 }
+
 function deleteVideo(i){ if(confirm("Supprimer cette vidéo ?")){ videos.splice(i,1); saveVideos(); } }
+
 function displayVideos(){
-    const container=document.getElementById("videoList");
-    container.innerHTML="";
-    videos.forEach((v,i)=>{
-        container.innerHTML+=`<div class="card">
-        <img src="${v.image}">
-        <h3>${v.title}</h3>
-        <p>Catégorie: ${v.category}</p>
-        <p>👁️ Vues: ${v.views}</p>
-        <div class="actions">
-        <button class="edit" onclick="editVideo(${i})">✏️ Modifier</button>
-        <button class="delete" onclick="deleteVideo(${i})">❌ Supprimer</button>
-        </div></div>`;
-    });
+const container=document.getElementById("videoList");
+container.innerHTML="";
+videos.forEach((v,i)=>{
+container.innerHTML+=`<div class="card">
+<img src="${v.image}">
+<h3>${v.title}</h3>
+<p>Catégorie: ${v.category}</p>
+<p>👁️ Vues: ${v.views}</p>
+<div class="actions">
+<button class="edit" onclick="editVideo(${i})">✏️ Modifier</button>
+<button class="delete" onclick="deleteVideo(${i})">❌ Supprimer</button>
+<button class="quit" onclick="playExternal(${i})">▶️ Tester</button>
+</div></div>`;
+});
 }
+
+function quitAdmin(){ window.location.href="index.html"; }
+
+// Fonction spéciale pour ouvrir external dans un nouvel onglet
+function playExternal(index){
+let v = videos[index];
+if(v.type==="external"){
+    const newWin = window.open(v.url, "_blank");
+    // Reload automatique pour s'assurer que la vidéo s'affiche
+    setTimeout(()=>{ newWin.location.reload(); }, 1000);
+}else{
+    alert("Cette fonction est réservée aux vidéos 'external'.");
+}
+
+}
+
+// Initialisation
 displayVideos();
 </script>
 
