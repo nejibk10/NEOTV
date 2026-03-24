@@ -3,108 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CartoonFlix PRO - Admin</title>
-
+<title>CartoonFlix PRO</title>
 <style>
 body { margin:0; font-family: Arial; background:#141414; color:white; }
 .header { padding:20px; display:flex; justify-content:space-between; align-items:center; background:#141414; border-bottom:1px solid #333; }
 .header h1 { color:#e50914; }
-button { padding:6px 10px; border:none; border-radius:4px; cursor:pointer; }
-button.add { background:#e50914; color:white; }
-button.edit { background:#ffaa00; color:black; }
-button.delete { background:#ff3333; color:white; }
-.grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:15px; padding:20px; }
-.card { background:#222; border-radius:10px; overflow:hidden; transition:0.3s; padding:10px; }
-.card img { width:100%; height:150px; object-fit:cover; border-radius:5px; }
-.card h3 { margin:5px 0; font-size:1rem; }
-.card p { color:#aaa; font-size:0.85rem; margin:5px 0; }
-.card .actions { display:flex; gap:5px; margin-top:5px; flex-wrap:wrap; }
+.category-section { margin-top:20px; }
+.category-title { font-size:1.5rem; margin:10px 20px; color:#e50914; }
+.carousel { display:flex; overflow-x:auto; padding:10px 20px; gap:10px; scroll-behavior:smooth; }
+.card { min-width:180px; background:#222; border-radius:10px; overflow:hidden; cursor:pointer; transition:0.3s; }
+.card img { width:100%; height:120px; object-fit:cover; }
+.card h3 { padding:5px 10px; font-size:1rem; }
+.card p { padding:0 10px 5px; font-size:0.85rem; color:#aaa; }
+.player { position:fixed; bottom:0; width:100%; background:black; display:none; }
+iframe { width:100%; height:300px; border:none; }
 </style>
 </head>
-
 <body>
 
 <div class="header">
-    <h1>🎬 CartoonFlix Admin</h1>
-    <button class="add" onclick="addVideo()">➕ Ajouter une vidéo</button>
+    <h1>🎬 CartoonFlix PRO</h1>
+    <a href="admin.html" style="color:white; text-decoration:none; padding:6px 12px; background:#e50914; border-radius:4px;">Admin</a>
 </div>
 
-<div class="grid" id="videoList"></div>
+<div id="categoriesContainer"></div>
+
+<div class="player" id="playerContainer">
+    <iframe id="player"></iframe>
+</div>
 
 <script>
-const ADMIN_PASSWORD = "1234";
+// ==== CATEGORIES ====
+const categories = [
+  "3-5 ans","6-8 ans","9-12 ans",
+  "Après l'école","À regarder en famille","Podcasts",
+  "Séries animées","Films Comédie","Films Aventure",
+  "Les plus regardés"
+];
 
-// Vérification mot de passe
-(function(){
-    let pass = prompt("Mot de passe Admin ?");
-    if(pass!==ADMIN_PASSWORD) { alert("❌ Accès refusé !"); window.close(); }
-})();
-
-// Charger les vidéos
 let videos = JSON.parse(localStorage.getItem("videos")) || [];
 
-// Sauvegarder
-function saveVideos(){ localStorage.setItem("videos", JSON.stringify(videos)); displayVideos(); }
-
-// Ajouter vidéo
-function addVideo(){
-    let title = prompt("Nom de la vidéo ?");
-    if(!title) return;
-    let type = prompt("Type (youtube / external) ?");
-    if(!type) return;
-    let url = prompt("Lien vidéo ?");
-    if(!url) return;
-    let image = type==="youtube" ? 
-        "https://img.youtube.com/vi/"+url.split("v=")[1]+"/hqdefault.jpg" :
-        prompt("Lien image ?");
-    let category = prompt("Catégorie ?");
-    videos.push({title,type,url,image,views:0,category});
-    saveVideos();
-}
-
-// Modifier vidéo
-function editVideo(index){
-    let v = videos[index];
-    let title = prompt("Nom ?",v.title);
-    let type = prompt("Type (youtube / external) ?",v.type);
-    let url = prompt("Lien vidéo ?",v.url);
-    let image = v.image;
-    if(type==="external") image = prompt("Lien image ?",v.image);
-    let category = prompt("Catégorie ?",v.category);
-    videos[index] = {title,type,url,image,views:v.views,category};
-    saveVideos();
-}
-
-// Supprimer vidéo
-function deleteVideo(index){
-    if(confirm("Supprimer cette vidéo ?")){
-        videos.splice(index,1);
-        saveVideos();
-    }
-}
-
-// Afficher vidéos
-function displayVideos(){
-    const container = document.getElementById("videoList");
+function displayVideosByCategory(cat){
+    const container = document.getElementById("categoriesContainer");
     container.innerHTML="";
-    videos.forEach((v,i)=>{
-        container.innerHTML+=`
-        <div class="card">
-            <img src="${v.image}">
-            <h3>${v.title}</h3>
-            <p>Catégorie : ${v.category}</p>
-            <p>👁️ Vues : ${v.views}</p>
-            <div class="actions">
-                <button class="edit" onclick="editVideo(${i})">✏️ Modifier</button>
-                <button class="delete" onclick="deleteVideo(${i})">❌ Supprimer</button>
-            </div>
-        </div>`;
+
+    categories.forEach(category=>{
+        let catVideos = videos.filter(v=>v.category===category);
+        if(category==="Les plus regardés"){
+            catVideos = [...videos].sort((a,b)=>b.views-a.views).slice(0,20);
+        }
+        if(catVideos.length===0) return;
+
+        let section = document.createElement("div");
+        section.className = "category-section";
+
+        let title = document.createElement("div");
+        title.className="category-title";
+        title.textContent = category;
+        section.appendChild(title);
+
+        let carousel = document.createElement("div");
+        carousel.className="carousel";
+
+        catVideos.forEach((v,i)=>{
+            let card = document.createElement("div");
+            card.className="card";
+            card.innerHTML = `<img src="${v.image}"><h3>${v.title}</h3><p>👁️ ${v.views}</p>`;
+            card.onclick = ()=>playVideo(i);
+            carousel.appendChild(card);
+        });
+
+        section.appendChild(carousel);
+        container.appendChild(section);
     });
 }
 
-// Initialisation
-displayVideos();
-</script>
+function playVideo(index){
+    videos[index].views++;
+    localStorage.setItem("videos",JSON.stringify(videos));
+    const playerContainer = document.getElementById("playerContainer");
+    const player = document.getElementById("player");
+    player.src = videos[index].url;
+    playerContainer.style.display="block";
+    displayVideosByCategory();
+}
 
+// INIT
+displayVideosByCategory();
+</script>
 </body>
 </html>
