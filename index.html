@@ -3,199 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CartoonFlix</title>
+<title>CartoonFlix PRO - Admin</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #141414;
-    color: white;
-}
-
-.header {
-    padding: 20px;
-    font-size: 2rem;
-    color: #e50914;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    padding: 10px;
-    background: #e50914;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 20px;
-}
-
-.card {
-    background: #222;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-.card h3 {
-    padding: 10px;
-    font-size: 1rem;
-}
-
-.card p {
-    padding: 0 10px 10px;
-    color: #aaa;
-}
-
-.player {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: black;
-}
-
-iframe {
-    width: 100%;
-    height: 300px;
-    border: none;
-}
+body { margin:0; font-family: Arial; background:#141414; color:white; }
+.header { padding:20px; display:flex; justify-content:space-between; align-items:center; background:#141414; border-bottom:1px solid #333; }
+.header h1 { color:#e50914; }
+button { padding:6px 10px; border:none; border-radius:4px; cursor:pointer; }
+button.add { background:#e50914; color:white; }
+button.edit { background:#ffaa00; color:black; }
+button.delete { background:#ff3333; color:white; }
+.grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:15px; padding:20px; }
+.card { background:#222; border-radius:10px; overflow:hidden; transition:0.3s; padding:10px; }
+.card img { width:100%; height:150px; object-fit:cover; border-radius:5px; }
+.card h3 { margin:5px 0; font-size:1rem; }
+.card p { color:#aaa; font-size:0.85rem; margin:5px 0; }
+.card .actions { display:flex; gap:5px; margin-top:5px; flex-wrap:wrap; }
 </style>
 </head>
 
 <body>
 
 <div class="header">
-    🎬 CartoonFlix
-    <button onclick="checkAdmin()">➕ Ajouter</button>
+    <h1>🎬 CartoonFlix Admin</h1>
+    <button class="add" onclick="addVideo()">➕ Ajouter une vidéo</button>
 </div>
 
 <div class="grid" id="videoList"></div>
 
-<div class="player">
-    <iframe id="player"></iframe>
-</div>
-
 <script>
-// 🔐 MOT DE PASSE (change le !)
 const ADMIN_PASSWORD = "1234";
 
-// Vérification admin
-function checkAdmin() {
-    let pass = prompt("Mot de passe ?");
-    if(pass === ADMIN_PASSWORD){
-        addVideo();
-    } else {
-        alert("❌ Accès refusé !");
-    }
-}
+// Vérification mot de passe
+(function(){
+    let pass = prompt("Mot de passe Admin ?");
+    if(pass!==ADMIN_PASSWORD) { alert("❌ Accès refusé !"); window.close(); }
+})();
 
 // Charger les vidéos
 let videos = JSON.parse(localStorage.getItem("videos")) || [];
 
-// Sauvegarder sans refresh
-function saveVideos() {
-    localStorage.setItem("videos", JSON.stringify(videos));
-    displayVideos();
-}
+// Sauvegarder
+function saveVideos(){ localStorage.setItem("videos", JSON.stringify(videos)); displayVideos(); }
 
 // Ajouter vidéo
-function addVideo() {
-    let title = prompt("Nom ?");
-    let type = prompt("Type (youtube / external)");
-    let url = prompt("Lien vidéo");
-
-    let image = "";
-
-    if(type === "youtube"){
-        let id = url.split("v=")[1];
-        url = "https://www.youtube.com/embed/" + id;
-        image = "https://img.youtube.com/vi/" + id + "/hqdefault.jpg";
-    } else {
-        image = prompt("Lien image");
-    }
-
-    videos.push({
-        title,
-        type,
-        url,
-        image,
-        views: 0
-    });
-
+function addVideo(){
+    let title = prompt("Nom de la vidéo ?");
+    if(!title) return;
+    let type = prompt("Type (youtube / external) ?");
+    if(!type) return;
+    let url = prompt("Lien vidéo ?");
+    if(!url) return;
+    let image = type==="youtube" ? 
+        "https://img.youtube.com/vi/"+url.split("v=")[1]+"/hqdefault.jpg" :
+        prompt("Lien image ?");
+    let category = prompt("Catégorie ?");
+    videos.push({title,type,url,image,views:0,category});
     saveVideos();
 }
 
-// Affichage (SANS BUG)
-function displayVideos() {
+// Modifier vidéo
+function editVideo(index){
+    let v = videos[index];
+    let title = prompt("Nom ?",v.title);
+    let type = prompt("Type (youtube / external) ?",v.type);
+    let url = prompt("Lien vidéo ?",v.url);
+    let image = v.image;
+    if(type==="external") image = prompt("Lien image ?",v.image);
+    let category = prompt("Catégorie ?",v.category);
+    videos[index] = {title,type,url,image,views:v.views,category};
+    saveVideos();
+}
+
+// Supprimer vidéo
+function deleteVideo(index){
+    if(confirm("Supprimer cette vidéo ?")){
+        videos.splice(index,1);
+        saveVideos();
+    }
+}
+
+// Afficher vidéos
+function displayVideos(){
     const container = document.getElementById("videoList");
-    container.innerHTML = "";
-
-    videos.forEach((video, index) => {
-
-        if(!video.views) video.views = 0;
-
-        if(video.type === "youtube"){
-            container.innerHTML += `
-            <div class="card" onclick="playVideo(${index})">
-                <img src="${video.image}">
-                <h3>${video.title}</h3>
-                <p>👁️ ${video.views} vues</p>
-            </div>`;
-        }
-
-        if(video.type === "external"){
-            container.innerHTML += `
-            <div class="card">
-                <img src="${video.image}">
-                <h3>${video.title}</h3>
-                <p>👁️ ${video.views} vues</p>
-                <button onclick="event.stopPropagation(); openVideo(${index})">
-                ▶ Regarder
-                </button>
-            </div>`;
-        }
-
+    container.innerHTML="";
+    videos.forEach((v,i)=>{
+        container.innerHTML+=`
+        <div class="card">
+            <img src="${v.image}">
+            <h3>${v.title}</h3>
+            <p>Catégorie : ${v.category}</p>
+            <p>👁️ Vues : ${v.views}</p>
+            <div class="actions">
+                <button class="edit" onclick="editVideo(${i})">✏️ Modifier</button>
+                <button class="delete" onclick="deleteVideo(${i})">❌ Supprimer</button>
+            </div>
+        </div>`;
     });
 }
 
-// Lecture YouTube
-function playVideo(index) {
-    videos[index].views++;
-    localStorage.setItem("videos", JSON.stringify(videos));
-    document.getElementById("player").src = videos[index].url;
-    displayVideos();
-}
-
-// Lien externe (TV5, etc.)
-function openVideo(index){
-    videos[index].views++;
-    localStorage.setItem("videos", JSON.stringify(videos));
-    window.open(videos[index].url, "_blank");
-    displayVideos();
-}
-
-// Charger au début
+// Initialisation
 displayVideos();
-
 </script>
 
 </body>
