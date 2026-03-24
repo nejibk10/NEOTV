@@ -18,6 +18,17 @@ body {
     font-size: 2rem;
     color: #e50914;
     font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 10px;
+    background: #e50914;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .grid {
@@ -36,7 +47,7 @@ body {
 }
 
 .card:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .card img {
@@ -50,12 +61,16 @@ body {
     font-size: 1rem;
 }
 
+.card p {
+    padding: 0 10px 10px;
+    color: #aaa;
+}
+
 .player {
     position: fixed;
     bottom: 0;
     width: 100%;
     background: black;
-    padding: 10px;
 }
 
 iframe {
@@ -63,55 +78,110 @@ iframe {
     height: 300px;
     border: none;
 }
-button {
-    width: 100%;
-    padding: 10px;
-    background: #e50914;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
 </style>
 </head>
 
 <body>
 
-<div class="header">🎬 CartoonFlix</div>
-
-<div class="grid">
-
-<!-- SCHTROUMPFS -->
-<div class="card">
-    <img src="https://upload.wikimedia.org/wikipedia/en/2/2a/Smurfs.png">
-    <h3>Les Schtroumpfs</h3>
-    <button onclick="openSmurfs()">Regarder</button>
+<div class="header">
+    🎬 CartoonFlix
+    <button onclick="checkAdmin()">➕ Ajouter</button>
 </div>
 
-<!-- YOUTUBE EXEMPLE -->
-<div class="card" onclick="playVideo('https://www.youtube.com/embed/aqz-KE-bpKQ')">
-    <img src="https://img.youtube.com/vi/aqz-KE-bpKQ/hqdefault.jpg">
-    <h3>Dessin animé fun</h3>
-</div>
+<div class="grid" id="videoList"></div>
 
-<div class="card" onclick="playVideo('https://www.youtube.com/embed/tgbNymZ7vqY')">
-    <img src="https://img.youtube.com/vi/tgbNymZ7vqY/hqdefault.jpg">
-    <h3>Cartoon épisode</h3>
-</div>
-
-</div>
-
-<!-- PLAYER -->
 <div class="player">
     <iframe id="player"></iframe>
 </div>
 
 <script>
-function playVideo(url) {
-    document.getElementById("player").src = url;
+const ADMIN_PASSWORD = "1234"; // change ça !
+
+function checkAdmin() {
+    let pass = prompt("Mot de passe ?");
+    if(pass === ADMIN_PASSWORD){
+        addVideo();
+    } else {
+        alert("❌ Accès refusé !");
+    }
 }
 
-function openSmurfs() {
-    window.open("https://www.tv5mondeplus.com/fr/jeunesse/a-partir-de-6-ans/les-schtroumpfs-s-1-e1-la-schtroumpfette", "_blank");
+// Charger ou créer liste
+let videos = JSON.parse(localStorage.getItem("videos")) || [];
+
+// Sauvegarder
+function saveVideos() {
+    localStorage.setItem("videos", JSON.stringify(videos));
+    location.reload();
+}
+
+// Ajouter vidéo
+function addVideo() {
+    let title = prompt("Nom ?");
+    let type = prompt("Type (youtube / external)");
+    let url = prompt("Lien vidéo");
+
+    let image = "";
+
+    if(type === "youtube"){
+        let id = url.split("v=")[1];
+        url = "https://www.youtube.com/embed/" + id;
+        image = "https://img.youtube.com/vi/" + id + "/hqdefault.jpg";
+    } else {
+        image = prompt("Lien image");
+    }
+
+    videos.push({
+        title,
+        type,
+        url,
+        image,
+        views: 0
+    });
+
+    saveVideos();
+}
+
+// Affichage
+const container = document.getElementById("videoList");
+
+videos.forEach((video, index) => {
+
+    if(!video.views) video.views = 0;
+
+    if(video.type === "youtube"){
+        container.innerHTML += `
+        <div class="card" onclick="playVideo(${index})">
+            <img src="${video.image}">
+            <h3>${video.title}</h3>
+            <p>👁️ ${video.views} vues</p>
+        </div>`;
+    }
+
+    if(video.type === "external"){
+        container.innerHTML += `
+        <div class="card">
+            <img src="${video.image}">
+            <h3>${video.title}</h3>
+            <p>👁️ ${video.views} vues</p>
+            <button onclick="openVideo(${index})">Regarder</button>
+        </div>`;
+    }
+
+});
+
+// Lecture vidéo
+function playVideo(index) {
+    videos[index].views++;
+    localStorage.setItem("videos", JSON.stringify(videos));
+    document.getElementById("player").src = videos[index].url;
+}
+
+// Lien externe
+function openVideo(index){
+    videos[index].views++;
+    localStorage.setItem("videos", JSON.stringify(videos));
+    window.open(videos[index].url);
 }
 </script>
 
