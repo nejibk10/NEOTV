@@ -95,8 +95,10 @@ iframe {
 </div>
 
 <script>
-const ADMIN_PASSWORD = "1234"; // change ça !
+// 🔐 MOT DE PASSE (change le !)
+const ADMIN_PASSWORD = "1234";
 
+// Vérification admin
 function checkAdmin() {
     let pass = prompt("Mot de passe ?");
     if(pass === ADMIN_PASSWORD){
@@ -106,13 +108,13 @@ function checkAdmin() {
     }
 }
 
-// Charger ou créer liste
+// Charger les vidéos
 let videos = JSON.parse(localStorage.getItem("videos")) || [];
 
-// Sauvegarder
+// Sauvegarder sans refresh
 function saveVideos() {
     localStorage.setItem("videos", JSON.stringify(videos));
-    location.reload();
+    displayVideos();
 }
 
 // Ajouter vidéo
@@ -142,47 +144,58 @@ function addVideo() {
     saveVideos();
 }
 
-// Affichage
-const container = document.getElementById("videoList");
+// Affichage (SANS BUG)
+function displayVideos() {
+    const container = document.getElementById("videoList");
+    container.innerHTML = "";
 
-videos.forEach((video, index) => {
+    videos.forEach((video, index) => {
 
-    if(!video.views) video.views = 0;
+        if(!video.views) video.views = 0;
 
-    if(video.type === "youtube"){
-        container.innerHTML += `
-        <div class="card" onclick="playVideo(${index})">
-            <img src="${video.image}">
-            <h3>${video.title}</h3>
-            <p>👁️ ${video.views} vues</p>
-        </div>`;
-    }
+        if(video.type === "youtube"){
+            container.innerHTML += `
+            <div class="card" onclick="playVideo(${index})">
+                <img src="${video.image}">
+                <h3>${video.title}</h3>
+                <p>👁️ ${video.views} vues</p>
+            </div>`;
+        }
 
-    if(video.type === "external"){
-        container.innerHTML += `
-        <div class="card">
-            <img src="${video.image}">
-            <h3>${video.title}</h3>
-            <p>👁️ ${video.views} vues</p>
-            <button onclick="openVideo(${index})">Regarder</button>
-        </div>`;
-    }
+        if(video.type === "external"){
+            container.innerHTML += `
+            <div class="card">
+                <img src="${video.image}">
+                <h3>${video.title}</h3>
+                <p>👁️ ${video.views} vues</p>
+                <button onclick="event.stopPropagation(); openVideo(${index})">
+                ▶ Regarder
+                </button>
+            </div>`;
+        }
 
-});
+    });
+}
 
-// Lecture vidéo
+// Lecture YouTube
 function playVideo(index) {
     videos[index].views++;
     localStorage.setItem("videos", JSON.stringify(videos));
     document.getElementById("player").src = videos[index].url;
+    displayVideos();
 }
 
-// Lien externe
+// Lien externe (TV5, etc.)
 function openVideo(index){
     videos[index].views++;
     localStorage.setItem("videos", JSON.stringify(videos));
-    window.open(videos[index].url);
+    window.open(videos[index].url, "_blank");
+    displayVideos();
 }
+
+// Charger au début
+displayVideos();
+
 </script>
 
 </body>
