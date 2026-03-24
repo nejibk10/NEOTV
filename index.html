@@ -8,6 +8,7 @@
 body { margin:0; font-family: Arial; background:#141414; color:white; }
 .header { padding:20px; display:flex; justify-content:space-between; align-items:center; background:#141414; border-bottom:1px solid #333; }
 .header h1 { color:#e50914; }
+.header a { color:white; text-decoration:none; padding:6px 12px; background:#e50914; border-radius:4px; }
 .category-section { margin-top:20px; }
 .category-title { font-size:1.5rem; margin:10px 20px; color:#e50914; }
 .carousel { display:flex; overflow-x:auto; padding:10px 20px; gap:10px; scroll-behavior:smooth; }
@@ -15,15 +16,15 @@ body { margin:0; font-family: Arial; background:#141414; color:white; }
 .card img { width:100%; height:120px; object-fit:cover; }
 .card h3 { padding:5px 10px; font-size:1rem; }
 .card p { padding:0 10px 5px; font-size:0.85rem; color:#aaa; }
-.player { position:fixed; bottom:0; width:100%; background:black; display:none; }
-iframe { width:100%; height:300px; border:none; }
+.player { position:fixed; bottom:0; width:100%; background:black; display:none; z-index:999; }
+.player iframe { width:100%; height:300px; border:none; }
 </style>
 </head>
 <body>
 
 <div class="header">
     <h1>🎬 CartoonFlix PRO</h1>
-    <a href="admin.html" style="color:white; text-decoration:none; padding:6px 12px; background:#e50914; border-radius:4px;">Admin</a>
+    <a href="admin.html">Admin</a>
 </div>
 
 <div id="categoriesContainer"></div>
@@ -41,9 +42,11 @@ const categories = [
   "Les plus regardés"
 ];
 
+// ==== VIDEOS ====
 let videos = JSON.parse(localStorage.getItem("videos")) || [];
 
-function displayVideosByCategory(cat){
+// ==== AFFICHER VIDEOS PAR CATEGORIE ====
+function displayVideosByCategory(){
     const container = document.getElementById("categoriesContainer");
     container.innerHTML="";
 
@@ -78,18 +81,33 @@ function displayVideosByCategory(cat){
     });
 }
 
+// ==== LECTURE VIDEO ====
 function playVideo(index){
+    const v = videos[index];
     videos[index].views++;
     localStorage.setItem("videos",JSON.stringify(videos));
+
     const playerContainer = document.getElementById("playerContainer");
     const player = document.getElementById("player");
-    player.src = videos[index].url;
-    playerContainer.style.display="block";
+
+    if(v.type === "youtube"){
+        // YouTube intégré
+        let vidId = v.url.split("v=")[1] || v.url.split("/").pop();
+        player.src = "https://www.youtube.com/embed/"+vidId+"?autoplay=1";
+        playerContainer.style.display="block";
+    } else {
+        // External → ouvrir dans nouvel onglet + reload automatique
+        const newWin = window.open(v.url,"_blank");
+        setTimeout(()=>{ newWin.location.reload(); }, 1000);
+        alert("La vidéo external s'ouvre dans un nouvel onglet.");
+    }
+
     displayVideosByCategory();
 }
 
-// INIT
+// ==== INITIALISATION ====
 displayVideosByCategory();
 </script>
+
 </body>
 </html>
